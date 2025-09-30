@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/WeatherApp/**)",
+      "Bash(node server.js)",
+      "Read(//d/MeetMe/**)",
+      "Bash(npm run dev:*)",
+      "Bash(dir)",
+      "Bash(powershell:*)",
+      "Read(//d/MohoChat/**)",
+      "Read(//c/Users/Prototype/Downloads/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

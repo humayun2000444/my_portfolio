@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Portfolio Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full">
+        <div class="text-center mb-6">
+            <div class="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Reset Portfolio Data</h1>
+            <p class="text-gray-600">This will clear localStorage and reload with fresh data</p>
+        </div>
+
+        <div class="space-y-4">
+            <button onclick="resetData()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+                Reset & Reload Portfolio
+            </button>
+
+            <a href="/" class="block text-center text-gray-600 hover:text-blue-600 font-medium">
+                Go Back Without Resetting
+            </a>
+        </div>
+
+        <div id="message" class="hidden mt-6 p-4 rounded-lg"></div>
+    </div>
+
+    <script>
+        function resetData() {
+            try {
+                // Clear localStorage
+                localStorage.clear();
+
+                // Show success message
+                const message = document.getElementById('message');
+                message.textContent = 'Portfolio data reset! Redirecting...';
+                message.className = 'mt-6 p-4 rounded-lg bg-green-100 text-green-700 font-medium text-center';
+                message.classList.remove('hidden');
+
+                // Redirect to home page after 1 second
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } catch (error) {
+                const message = document.getElementById('message');
+                message.textContent = 'Error resetting data: ' + error.message;
+                message.className = 'mt-6 p-4 rounded-lg bg-red-100 text-red-700 font-medium text-center';
+                message.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
