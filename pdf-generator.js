@@ -124,32 +124,39 @@ function downloadResumePDF() {
         });
     }
 
-    // Education - Google Style
-    addSectionHeader('Education');
+    // Projects - Google Style (Shortened for HR scanning) - MOVED UP
+    addSectionHeader('Key Projects');
 
-    if (education && education.length > 0) {
-        education.forEach((edu) => {
-            checkPageOverflow(18);
+    const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
+    featuredProjects.forEach((project) => {
+        checkPageOverflow(18);
 
-            // Degree | Field, bold
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(0, 0, 0);
-            doc.text(`${edu.degree}, ${edu.field}`, margin, yPos);
-            yPos += 5;
+        // Project Title, bold
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0);
+        doc.text(project.title, margin, yPos);
+        yPos += 5;
 
-            // Institution, normal
-            doc.setFont('helvetica', 'normal');
-            doc.text(edu.institution, margin, yPos);
-            yPos += 5;
+        // Technologies, italics
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(9);
+        doc.text(`Tech Stack: ${project.technologies.slice(0, 6).join(', ')}`, margin, yPos);
+        yPos += 5;
 
-            // Dates and Result, italics
-            doc.setFont('helvetica', 'italic');
-            doc.setFontSize(9);
-            doc.text(`${edu.startDate} - ${edu.endDate} | ${edu.result}`, margin, yPos);
-            yPos += 6;
+        // Description - Shortened to first 2 sentences or 150 chars
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
+        const finalDesc = shortDesc.length > 200 ? shortDesc.substring(0, 200) + '...' : shortDesc;
+        const descLines = doc.splitTextToSize(`• ${finalDesc}`, maxWidth - 5);
+        descLines.forEach(line => {
+            checkPageOverflow(7);
+            doc.text(line, margin + 3, yPos);
+            yPos += 5.5;
         });
-    }
+        yPos += 2;
+    });
 
     // Technical Skills - Google Style (Category: skills in one line)
     addSectionHeader('Technical Skills');
@@ -186,39 +193,32 @@ function downloadResumePDF() {
         yPos += 6;
     });
 
-    // Projects - Google Style (Shortened for HR scanning)
-    addSectionHeader('Key Projects');
+    // Education - Google Style - MOVED AFTER SKILLS
+    addSectionHeader('Education');
 
-    const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
-    featuredProjects.forEach((project) => {
-        checkPageOverflow(18);
+    if (education && education.length > 0) {
+        education.forEach((edu) => {
+            checkPageOverflow(18);
 
-        // Project Title, bold
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(0, 0, 0);
-        doc.text(project.title, margin, yPos);
-        yPos += 5;
+            // Degree | Field, bold
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 0, 0);
+            doc.text(`${edu.degree}, ${edu.field}`, margin, yPos);
+            yPos += 5;
 
-        // Technologies, italics
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(9);
-        doc.text(`Tech Stack: ${project.technologies.slice(0, 6).join(', ')}`, margin, yPos);
-        yPos += 5;
+            // Institution, normal
+            doc.setFont('helvetica', 'normal');
+            doc.text(edu.institution, margin, yPos);
+            yPos += 5;
 
-        // Description - Shortened to first 2 sentences or 150 chars
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
-        const finalDesc = shortDesc.length > 200 ? shortDesc.substring(0, 200) + '...' : shortDesc;
-        const descLines = doc.splitTextToSize(`• ${finalDesc}`, maxWidth - 5);
-        descLines.forEach(line => {
-            checkPageOverflow(7);
-            doc.text(line, margin + 3, yPos);
-            yPos += 5.5;
+            // Dates and Result, italics
+            doc.setFont('helvetica', 'italic');
+            doc.setFontSize(9);
+            doc.text(`${edu.startDate} - ${edu.endDate} | ${edu.result}`, margin, yPos);
+            yPos += 6;
         });
-        yPos += 2;
-    });
+    }
 
     // Achievements & Awards - Google Style
     if (achievements && achievements.length > 0) {

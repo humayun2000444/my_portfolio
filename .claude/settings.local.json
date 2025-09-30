@@ -10,7 +10,10 @@
       "Read(//d/MohoChat/**)",
       "Read(//c/Users/Prototype/Downloads/**)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate portfolio with enhanced projects and Google-standard resume\n\n- Enhanced Softswitch VoIP project with comprehensive features\n- Added Hosted PBX System project\n- Updated Online Exam Proctoring with AI features\n- Replaced MeetMe with MohoChat project\n- Optimized resume for HR quick scanning\n- Added auto-update feature for resumes\n- Shortened project descriptions for better readability\n- Added Key Strengths section in resume\n- Updated VoIP tech stack (FreeSWITCH, WebRTC, Janus, Socket.IO, Verto)\n- Updated contact information and LinkedIn URL\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate portfolio with enhanced projects and Google-standard resume\n\n- Enhanced Softswitch VoIP project with comprehensive features\n- Added Hosted PBX System project\n- Updated Online Exam Proctoring with AI features\n- Replaced MeetMe with MohoChat project\n- Optimized resume for HR quick scanning\n- Added auto-update feature for resumes\n- Shortened project descriptions for better readability\n- Added Key Strengths section in resume\n- Updated VoIP tech stack (FreeSWITCH, WebRTC, Janus, Socket.IO, Verto)\n- Updated contact information and LinkedIn URL\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(if not exist \"assets\" mkdir assets)"
     ],
     "deny": [],
     "ask": []

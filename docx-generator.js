@@ -140,66 +140,7 @@ async function downloadResumeDOCX() {
         });
     }
 
-    // Education
-    children.push(createSectionHeader('Education'));
-    if (education && education.length > 0) {
-        education.forEach((edu) => {
-            children.push(
-                new Paragraph({
-                    children: [
-                        new TextRun({
-                            text: `${edu.degree}, ${edu.field}`,
-                            bold: true,
-                            size: 22
-                        })
-                    ],
-                    spacing: { after: 100 }
-                }),
-                new Paragraph({
-                    text: edu.institution,
-                    spacing: { after: 100 }
-                }),
-                new Paragraph({
-                    children: [
-                        new TextRun({
-                            text: `${edu.startDate} - ${edu.endDate} | ${edu.result}`,
-                            italics: true,
-                            size: 20
-                        })
-                    ],
-                    spacing: { after: 150 }
-                })
-            );
-        });
-    }
-
-    // Technical Skills
-    children.push(createSectionHeader('Technical Skills'));
-    const skillsByCategory = skills.reduce((acc, skill) => {
-        if (!acc[skill.category]) acc[skill.category] = [];
-        acc[skill.category].push(skill);
-        return acc;
-    }, {});
-
-    Object.entries(skillsByCategory).forEach(([category, categorySkills]) => {
-        const skillsText = categorySkills.map(s => s.name).join(', ');
-        children.push(
-            new Paragraph({
-                children: [
-                    new TextRun({
-                        text: `${category}: `,
-                        bold: true
-                    }),
-                    new TextRun({
-                        text: skillsText
-                    })
-                ],
-                spacing: { after: 100 }
-            })
-        );
-    });
-
-    // Projects (Shortened for HR scanning)
+    // Projects (Shortened for HR scanning) - MOVED UP
     children.push(createSectionHeader('Key Projects'));
     const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
     featuredProjects.forEach((project) => {
@@ -234,6 +175,65 @@ async function downloadResumeDOCX() {
             })
         );
     });
+
+    // Technical Skills
+    children.push(createSectionHeader('Technical Skills'));
+    const skillsByCategory = skills.reduce((acc, skill) => {
+        if (!acc[skill.category]) acc[skill.category] = [];
+        acc[skill.category].push(skill);
+        return acc;
+    }, {});;
+
+    Object.entries(skillsByCategory).forEach(([category, categorySkills]) => {
+        const skillsText = categorySkills.map(s => s.name).join(', ');
+        children.push(
+            new Paragraph({
+                children: [
+                    new TextRun({
+                        text: `${category}: `,
+                        bold: true
+                    }),
+                    new TextRun({
+                        text: skillsText
+                    })
+                ],
+                spacing: { after: 100 }
+            })
+        );
+    });
+
+    // Education - MOVED AFTER SKILLS
+    children.push(createSectionHeader('Education'));
+    if (education && education.length > 0) {
+        education.forEach((edu) => {
+            children.push(
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: `${edu.degree}, ${edu.field}`,
+                            bold: true,
+                            size: 22
+                        })
+                    ],
+                    spacing: { after: 100 }
+                }),
+                new Paragraph({
+                    text: edu.institution,
+                    spacing: { after: 100 }
+                }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: `${edu.startDate} - ${edu.endDate} | ${edu.result}`,
+                            italics: true,
+                            size: 20
+                        })
+                    ],
+                    spacing: { after: 150 }
+                })
+            );
+        });
+    }
 
     // Achievements
     if (achievements && achievements.length > 0) {
