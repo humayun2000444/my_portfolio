@@ -8,7 +8,7 @@ let portfolioData = {
         location: "Dhaka, Bangladesh",
         address: "House no 530, Road no 12, Adabor, Dhaka 1207",
         company: "Telcobright Limited",
-        bio: "I'm a passionate Junior Software Engineer with hands-on experience in building full-stack applications and solving real-world problems through code. My skillset spans ReactJS, Node.js, Java, Spring Boot, C/C++, MySQL, PostgreSQL, and more. I have a strong interest in backend development, networking systems, and real-time communication technologies like WebRTC, Janus, and FreeSWITCH. I'm currently working on diverse projects ranging from chatbots, VoIP softswitch systems, to AI-based applications. I'm always eager to learn, collaborate, and contribute to impactful software solutions.",
+        bio: "Passionate about building full-stack applications, Android apps, and real-time communication solutions. Skilled in C, C++, Java, Spring Boot, ReactJS, Node.js, MySQL, PostgreSQL, and Android development. Experienced with backend systems, networking, VoIP technologies (WebRTC, Janus, FreeSWITCH), and AI/ML integration. Always eager to learn, collaborate, and deliver impactful software solutions.",
         profileImage: "assets/profile.jpg",
         linkedinUrl: "https://www.linkedin.com/in/humayun-ahmed775",
         githubUrl: "https://github.com/humayun2000444"
