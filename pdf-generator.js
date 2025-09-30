@@ -56,15 +56,40 @@ function downloadResumePDF() {
     doc.text(contactLine3, 105, yPos, { align: 'center' });
     yPos += 8;
 
-    // Professional Summary - Google Style
-    addSectionHeader('Summary');
+    // Professional Summary - Google Style (Concise for quick scanning)
+    addSectionHeader('Professional Summary');
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    const bioLines = doc.splitTextToSize(personalInfo.bio, maxWidth);
+
+    // Extract key points from bio (first 2-3 sentences)
+    const bioSentences = personalInfo.bio.split('.').slice(0, 3).join('.') + '.';
+    const shortBio = bioSentences.length > 300 ? bioSentences.substring(0, 300) + '...' : bioSentences;
+    const bioLines = doc.splitTextToSize(shortBio, maxWidth);
     doc.text(bioLines, margin, yPos);
-    yPos += bioLines.length * lineHeight + 6;
+    yPos += bioLines.length * 5.5 + 2;
+
+    // Add key highlights with bullet points for quick scanning
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Key Strengths:', margin, yPos);
+    yPos += 5;
+
+    doc.setFont('helvetica', 'normal');
+    const highlights = [
+        '• VoIP & Real-time Communication (FreeSWITCH, WebRTC, Janus, Socket.IO, Verto)',
+        '• Full-stack Development (React.js, Spring Boot, Node.js)',
+        '• Telecommunication Systems (Softswitch, PBX, Call Centers)',
+        '• AI/ML Integration (YOLOv8, MediaPipe, Real-time Detection)'
+    ];
+
+    highlights.forEach(highlight => {
+        checkPageOverflow(6);
+        doc.text(highlight, margin + 3, yPos);
+        yPos += 5;
+    });
+    yPos += 4;
 
     // Experience - Google Style (Position | Company | Dates on one line)
     addSectionHeader('Experience');
@@ -161,12 +186,12 @@ function downloadResumePDF() {
         yPos += 6;
     });
 
-    // Projects - Google Style
-    addSectionHeader('Projects');
+    // Projects - Google Style (Shortened for HR scanning)
+    addSectionHeader('Key Projects');
 
     const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
     featuredProjects.forEach((project) => {
-        checkPageOverflow(20);
+        checkPageOverflow(18);
 
         // Project Title, bold
         doc.setFontSize(10);
@@ -178,19 +203,21 @@ function downloadResumePDF() {
         // Technologies, italics
         doc.setFont('helvetica', 'italic');
         doc.setFontSize(9);
-        doc.text(`Technologies: ${project.technologies.join(', ')}`, margin, yPos);
+        doc.text(`Tech Stack: ${project.technologies.slice(0, 6).join(', ')}`, margin, yPos);
         yPos += 5;
 
-        // Description with bullet
+        // Description - Shortened to first 2 sentences or 150 chars
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
-        const descLines = doc.splitTextToSize(project.description, maxWidth - 5);
+        doc.setFontSize(9);
+        const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
+        const finalDesc = shortDesc.length > 200 ? shortDesc.substring(0, 200) + '...' : shortDesc;
+        const descLines = doc.splitTextToSize(`• ${finalDesc}`, maxWidth - 5);
         descLines.forEach(line => {
-            checkPageOverflow(8);
-            doc.text(`• ${line}`, margin + 3, yPos);
-            yPos += lineHeight;
+            checkPageOverflow(7);
+            doc.text(line, margin + 3, yPos);
+            yPos += 5.5;
         });
-        yPos += 3;
+        yPos += 2;
     });
 
     // Achievements & Awards - Google Style

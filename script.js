@@ -34,7 +34,7 @@ let portfolioData = {
         {
             id: "1",
             title: "Softswitch VoIP Calling System",
-            description: "Enterprise-grade Softswitch VoIP calling system built with FreeSWITCH ESL and Spring Boot for telecommunication operators. Deployed at Cosmopolitan Communications Limited and BTCL. Features include intelligent call routing with least-cost routing (LCR), real-time billing engine with prepaid/postpaid support, call detail records (CDR) management, SIP trunk management, concurrent call handling, call quality monitoring (QoS), automated failover and load balancing, WebRTC gateway integration, REST API for system integration, real-time call analytics dashboard, and comprehensive monitoring tools. Handles high-volume call traffic with PostgreSQL database for robust data management.",
+            description: "Enterprise-grade Softswitch VoIP calling system built with FreeSWITCH ESL and Spring Boot for telecommunication operators. Features include intelligent call routing with least-cost routing (LCR), real-time billing engine with prepaid/postpaid support, call detail records (CDR) management, SIP trunk management, concurrent call handling, call quality monitoring (QoS), automated failover and load balancing, WebRTC gateway integration, REST API for system integration, real-time call analytics dashboard, and comprehensive monitoring tools. Handles high-volume call traffic with PostgreSQL database for robust data management.",
             technologies: ["FreeSWITCH", "ESL (Event Socket Layer)", "Spring Boot", "Java", "VoIP", "SIP Protocol", "WebRTC", "PostgreSQL", "REST API", "CDR Management"],
             githubUrl: "https://github.com/humayun2000444",
             liveUrl: "",

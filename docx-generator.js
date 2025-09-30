@@ -62,14 +62,50 @@ async function downloadResumeDOCX() {
         });
     }
 
-    // Professional Summary
-    children.push(createSectionHeader('Summary'));
+    // Professional Summary (Concise for HR scanning)
+    children.push(createSectionHeader('Professional Summary'));
+
+    // Shortened bio for quick reading
+    const bioSentences = personalInfo.bio.split('.').slice(0, 3).join('.') + '.';
+    const shortBio = bioSentences.length > 300 ? bioSentences.substring(0, 300) + '...' : bioSentences;
+
     children.push(
         new Paragraph({
-            text: personalInfo.bio,
-            spacing: { after: 200 }
+            text: shortBio,
+            spacing: { after: 150 }
         })
     );
+
+    // Key Strengths for quick scanning
+    children.push(
+        new Paragraph({
+            children: [
+                new TextRun({
+                    text: 'Key Strengths:',
+                    bold: true
+                })
+            ],
+            spacing: { after: 100 }
+        })
+    );
+
+    const highlights = [
+        'VoIP & Real-time Communication (FreeSWITCH, WebRTC, Janus, Socket.IO, Verto)',
+        'Full-stack Development (React.js, Spring Boot, Node.js)',
+        'Telecommunication Systems (Softswitch, PBX, Call Centers)',
+        'AI/ML Integration (YOLOv8, MediaPipe, Real-time Detection)'
+    ];
+
+    highlights.forEach(highlight => {
+        children.push(
+            new Paragraph({
+                text: `• ${highlight}`,
+                spacing: { after: 80, left: 200 }
+            })
+        );
+    });
+
+    children.push(new Paragraph({ text: '', spacing: { after: 100 } }));
 
     // Experience
     children.push(createSectionHeader('Experience'));
@@ -163,10 +199,14 @@ async function downloadResumeDOCX() {
         );
     });
 
-    // Projects
-    children.push(createSectionHeader('Projects'));
+    // Projects (Shortened for HR scanning)
+    children.push(createSectionHeader('Key Projects'));
     const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
     featuredProjects.forEach((project) => {
+        // Shorten description to first 2 sentences
+        const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
+        const finalDesc = shortDesc.length > 200 ? shortDesc.substring(0, 200) + '...' : shortDesc;
+
         children.push(
             new Paragraph({
                 children: [
@@ -181,7 +221,7 @@ async function downloadResumeDOCX() {
             new Paragraph({
                 children: [
                     new TextRun({
-                        text: `Technologies: ${project.technologies.join(', ')}`,
+                        text: `Tech Stack: ${project.technologies.slice(0, 6).join(', ')}`,
                         italics: true,
                         size: 20
                     })
@@ -189,7 +229,7 @@ async function downloadResumeDOCX() {
                 spacing: { after: 100 }
             }),
             new Paragraph({
-                text: `• ${project.description}`,
+                text: `• ${finalDesc}`,
                 spacing: { after: 150, left: 200 }
             })
         );
