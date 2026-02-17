@@ -46,7 +46,11 @@ const defaultData: PortfolioData = {
     { id: "9", name: "WebRTC", category: "VoIP", level: 85 },
     { id: "10", name: "Janus", category: "VoIP", level: 78 },
     { id: "11", name: "TypeScript", category: "Frontend", level: 82 },
-    { id: "12", name: "HTML/CSS", category: "Frontend", level: 90 }
+    { id: "12", name: "HTML/CSS", category: "Frontend", level: 90 },
+    { id: "13", name: "Docker", category: "DevOps", level: 75 },
+    { id: "14", name: "LXD", category: "DevOps", level: 70 },
+    { id: "15", name: "GitHub Actions", category: "DevOps", level: 75 },
+    { id: "16", name: "Nginx", category: "DevOps", level: 78 }
   ],
   projects: [
     {
