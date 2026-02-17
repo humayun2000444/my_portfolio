@@ -24,12 +24,12 @@ interface PortfolioContextType {
 const defaultData: PortfolioData = {
   personalInfo: {
     name: "Humayun Ahmed",
-    title: "Junior Software Engineer",
+    title: "Software Engineer",
     email: "humayun@example.com",
     phone: "+880-XXX-XXXX",
     location: "Dhaka, Bangladesh",
     company: "Telcobright Limited",
-    bio: "I'm a passionate Junior Software Engineer with hands-on experience in building full-stack applications and solving real-world problems through code. My skillset spans ReactJS, Node.js, Java, Spring Boot, C/C++, MySQL, PostgreSQL, and more. I have a strong interest in backend development, networking systems, and real-time communication technologies like WebRTC, Janus, and FreeSWITCH. I'm currently working on diverse projects ranging from chatbots, VoIP softswitch systems, to AI-based applications. I'm always eager to learn, collaborate, and contribute to impactful software solutions.",
+    bio: "I'm a Software Engineer with 3+ years of hands-on experience building full-stack applications using Java, Spring Boot, and ReactJS. I specialize in real-time communication systems, with expertise in WebRTC, Janus, and FreeSWITCH for VoIP solutions. I have a strong foundation in data structures and algorithms (ICPC participant) and enjoy debugging complex systems. I'm experienced with DevOps tools like Docker, GitHub Actions, and Nginx. I thrive in R&D environments—prototyping ideas quickly, experimenting with new technologies, and turning concepts into working products.",
     profileImage: "",
     linkedinUrl: "https://linkedin.com/in/humayun-ahmed",
     githubUrl: "https://github.com/humayun2000444"
