@@ -46,6 +46,7 @@ export interface Education {
   field: string;
   startDate: string;
   endDate: string;
+  cgpa?: number;
 }
 
 export interface Achievement {
