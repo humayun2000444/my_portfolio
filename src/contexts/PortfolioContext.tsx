@@ -112,7 +112,7 @@ const defaultData: PortfolioData = {
       degree: "Bachelor of Science (BSc)",
       field: "Computer Science & Engineering",
       startDate: "2019",
-      endDate: "2023"
+      endDate: "2024"
     },
     {
       id: "2",
