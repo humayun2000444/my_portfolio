@@ -85,7 +85,7 @@ const defaultData: PortfolioData = {
     {
       id: "1",
       company: "Telcobright Limited",
-      position: "Junior Software Engineer",
+      position: "Software Engineer",
       startDate: "Jul 2023",
       description: "Working on VoIP solutions, WebRTC applications, FreeSWITCH softswitch systems, and enterprise software development. Technologies: Java, FreeSWITCH, WebRTC, Spring Boot, PostgreSQL, MySQL.",
       isCurrentRole: true

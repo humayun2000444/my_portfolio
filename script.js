@@ -185,7 +185,7 @@ let portfolioData = {
         {
             id: "1",
             company: "Telcobright Limited",
-            position: "Junior Software Engineer",
+            position: "Software Engineer",
             location: "Dhaka, Bangladesh · On-site",
             startDate: "Jul 2023",
             endDate: null,
