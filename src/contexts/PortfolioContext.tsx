@@ -125,7 +125,8 @@ const defaultData: PortfolioData = {
       degree: "Higher Secondary Certificate (HSC)",
       field: "Science",
       startDate: "2016",
-      endDate: "2018"
+      endDate: "2018",
+      cgpa: 3.5
     },
     {
       id: "3",
@@ -133,7 +134,8 @@ const defaultData: PortfolioData = {
       degree: "Secondary School Certificate (SSC)",
       field: "Science",
       startDate: "2014",
-      endDate: "2016"
+      endDate: "2016",
+      cgpa: 5.0
     }
   ],
   achievements: [

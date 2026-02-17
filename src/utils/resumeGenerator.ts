@@ -115,7 +115,7 @@ export const generateResumeHTML = (data: PortfolioData): string => {
                         <div class="item-title">${edu.degree} in ${edu.field}</div>
                         <div class="item-meta">${edu.startDate} - ${edu.endDate}</div>
                     </div>
-                    <div class="item-description">${edu.institution}</div>
+                    <div class="item-description">${edu.institution}${edu.cgpa ? ` | CGPA: ${edu.cgpa}` : ''}</div>
                 </div>
             `).join('')}
         </div>` : ''}

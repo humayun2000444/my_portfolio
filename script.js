@@ -219,7 +219,7 @@ let portfolioData = {
             institution: "Daffodil Institute of IT",
             degree: "Bachelor of Science (BSc)",
             field: "Computer Science & Engineering",
-            result: "Appeared",
+            result: "CGPA: 3.19 out of 4",
             startDate: "2019",
             endDate: "2023"
         },
