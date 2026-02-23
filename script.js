@@ -322,19 +322,166 @@ document.addEventListener('DOMContentLoaded', function() {
     loadData();
     renderPortfolio();
     initSmoothScroll();
+    initCustomCursor();
+    initCodeRain();
+    initScrollProgress();
+    initScrollReveal();
+    initCounterAnimation();
 
     // Add animation delays for staggered effects
     const fadeElements = document.querySelectorAll('.fade-in-up');
     fadeElements.forEach((el, index) => {
         el.style.animationDelay = `${index * 0.1}s`;
     });
+
+    // Console Easter Egg
+    console.log('%c👋 Hey Developer!', 'font-size: 24px; font-weight: bold; color: #4A9EE0;');
+    console.log('%c💻 Like what you see? Let\'s connect!', 'font-size: 14px; color: #6CCF7F;');
+    console.log('%c🔗 GitHub: https://github.com/humayun2000444', 'font-size: 12px; color: #8B949E;');
 });
+
+// ==================== CUSTOM CURSOR ====================
+function initCustomCursor() {
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursor-dot');
+
+    if (!cursor || !cursorDot) return;
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
+
+    // Use event delegation for hover effect on all interactive elements (including dynamically added ones)
+    document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest('a, button, .cursor-hover, input, textarea');
+        if (target) {
+            cursor.classList.add('hover');
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        const target = e.target.closest('a, button, .cursor-hover, input, textarea');
+        if (target) {
+            cursor.classList.remove('hover');
+        }
+    });
+}
+
+// ==================== CODE RAIN BACKGROUND ====================
+function initCodeRain() {
+    const codeRain = document.getElementById('code-rain');
+    if (!codeRain) return;
+
+    const codeChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン{}[]()<>=+-*/&|!?;:';
+    const columnCount = Math.floor(window.innerWidth / 20);
+
+    for (let i = 0; i < columnCount; i++) {
+        const column = document.createElement('div');
+        column.className = 'code-column';
+        column.style.left = (i * 20) + 'px';
+        column.style.animationDuration = (15 + Math.random() * 20) + 's';
+        column.style.animationDelay = (Math.random() * 10) + 's';
+
+        let text = '';
+        const charCount = Math.floor(10 + Math.random() * 20);
+        for (let j = 0; j < charCount; j++) {
+            text += codeChars[Math.floor(Math.random() * codeChars.length)] + '<br>';
+        }
+        column.innerHTML = text;
+        codeRain.appendChild(column);
+    }
+}
+
+// ==================== SCROLL PROGRESS BAR ====================
+function initScrollProgress() {
+    const progressBar = document.getElementById('scroll-progress');
+    if (!progressBar) return;
+
+    window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+}
+
+// ==================== SCROLL REVEAL ANIMATIONS ====================
+let scrollRevealObserver = null;
+
+function initScrollReveal() {
+    // Create observer only once
+    if (!scrollRevealObserver) {
+        scrollRevealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+    }
+
+    // Find all reveal elements that aren't already being observed (don't have 'active' class yet)
+    const revealElements = document.querySelectorAll('.reveal:not(.active)');
+    revealElements.forEach(el => scrollRevealObserver.observe(el));
+}
+
+// ==================== COUNTER ANIMATION ====================
+function initCounterAnimation() {
+    const counters = document.querySelectorAll('[data-count]');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-count'));
+                animateCounter(entry.target, target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(counter => observer.observe(counter));
+}
+
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target + (target === 100 ? '%' : '+');
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current) + (target === 100 ? '%' : '+');
+        }
+    }, 30);
+}
 
 // Load data from localStorage
 function loadData() {
-    const savedData = localStorage.getItem('portfolioData');
-    if (savedData) {
-        portfolioData = { ...portfolioData, ...JSON.parse(savedData) };
+    try {
+        const savedData = localStorage.getItem('portfolioData');
+        if (savedData) {
+            const parsed = JSON.parse(savedData);
+            // Deep merge to preserve default structure while updating with saved data
+            portfolioData = {
+                ...portfolioData,
+                ...parsed,
+                personalInfo: { ...portfolioData.personalInfo, ...(parsed.personalInfo || {}) },
+                skills: parsed.skills || portfolioData.skills,
+                projects: parsed.projects || portfolioData.projects,
+                experience: parsed.experience || portfolioData.experience,
+                education: parsed.education || portfolioData.education,
+                certifications: parsed.certifications || portfolioData.certifications,
+                achievements: parsed.achievements || portfolioData.achievements,
+                problemSolvingProfiles: parsed.problemSolvingProfiles || portfolioData.problemSolvingProfiles
+            };
+        }
+        console.log('Portfolio data loaded:', portfolioData);
+    } catch (error) {
+        console.error('Error loading data from localStorage:', error);
+        // Use default data if localStorage is corrupted
     }
 }
 
@@ -345,14 +492,19 @@ function saveData() {
 
 // Render Portfolio Content
 function renderPortfolio() {
-    renderPersonalInfo();
-    renderSkills();
-    renderProjects();
-    renderExperience();
-    renderEducation();
-    renderCertifications();
-    renderAchievements();
-    renderProblemSolvingProfiles();
+    console.log('Rendering portfolio with data:', portfolioData);
+
+    try { renderPersonalInfo(); console.log('✓ Personal info rendered'); } catch(e) { console.error('✗ Personal info error:', e); }
+    try { renderSkills(); console.log('✓ Skills rendered'); } catch(e) { console.error('✗ Skills error:', e); }
+    try { renderProjects(); console.log('✓ Projects rendered'); } catch(e) { console.error('✗ Projects error:', e); }
+    try { renderExperience(); console.log('✓ Experience rendered'); } catch(e) { console.error('✗ Experience error:', e); }
+    try { renderEducation(); console.log('✓ Education rendered'); } catch(e) { console.error('✗ Education error:', e); }
+    try { renderCertifications(); console.log('✓ Certifications rendered'); } catch(e) { console.error('✗ Certifications error:', e); }
+    try { renderAchievements(); console.log('✓ Achievements rendered'); } catch(e) { console.error('✗ Achievements error:', e); }
+    try { renderProblemSolvingProfiles(); console.log('✓ Problem solving profiles rendered'); } catch(e) { console.error('✗ Problem solving profiles error:', e); }
+
+    // Re-initialize scroll reveal for dynamically added elements
+    initScrollReveal();
 }
 
 // Render Personal Information
@@ -408,54 +560,78 @@ function renderSkills() {
 
     container.innerHTML = '';
 
-    Object.entries(skillsByCategory).forEach(([category, skills]) => {
+    const categoryIcons = {
+        'Frontend': 'fa-laptop-code',
+        'Backend': 'fa-server',
+        'VoIP': 'fa-phone-volume',
+        'Database': 'fa-database',
+        'DevOps': 'fa-cloud',
+        'Mobile': 'fa-mobile-alt'
+    };
+
+    const categoryColors = {
+        'Frontend': '#4A9EE0',
+        'Backend': '#6CCF7F',
+        'VoIP': '#C099E8',
+        'Database': '#E8935A',
+        'DevOps': '#8FC7E8',
+        'Mobile': '#E86B6B'
+    };
+
+    Object.entries(skillsByCategory).forEach(([category, skills], catIndex) => {
         const categoryDiv = document.createElement('div');
-        categoryDiv.className = 'bg-white rounded-2xl shadow-xl p-8 fade-in-up';
-
-        const categoryColors = {
-            'Frontend': 'from-blue-500 to-cyan-500',
-            'Backend': 'from-green-500 to-emerald-500',
-            'VoIP': 'from-purple-500 to-violet-500',
-            'Database': 'from-orange-500 to-red-500',
-            'Mobile': 'from-pink-500 to-rose-500'
-        };
-
-        const gradientClass = categoryColors[category] || 'from-gray-500 to-gray-600';
+        categoryDiv.className = 'reveal mb-10';
+        categoryDiv.style.animationDelay = `${catIndex * 0.1}s`;
+        const color = categoryColors[category] || '#4A9EE0';
+        const icon = categoryIcons[category] || 'fa-code';
 
         categoryDiv.innerHTML = `
-            <div class="flex items-center mb-8">
-                <div class="w-12 h-12 bg-gradient-to-r ${gradientClass} rounded-xl flex items-center justify-center mr-4">
-                    <i class="fas fa-code text-white text-xl"></i>
+            <div class="glass-effect rounded-xl p-6 border border-white/5" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div class="flex items-center mb-6 pb-4 border-b border-white/10">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3" style="background: ${color}15;">
+                        <i class="fas ${icon}" style="color: ${color};"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold font-display text-white">${category}</h3>
+                    <span class="ml-auto text-sm font-mono text-gray-500">${skills.length} skills</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900">${category}</h3>
-            </div>
-            <div class="space-y-6">
-                ${skills.map(skill => `
-                    <div class="skill-item" data-skill-id="${skill.id}">
-                        <div class="flex justify-between items-center mb-3">
-                            <h4 class="text-lg font-semibold text-gray-900">${skill.name}</h4>
-                            <div class="flex items-center space-x-3">
-                                <span class="text-sm font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">${skill.level}%</span>
-                                ${isEditMode ? `
-                                    <button onclick="editSkill('${skill.id}')" class="text-gray-400 hover:text-blue-600 p-1 rounded transition-colors">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deleteSkill('${skill.id}')" class="text-gray-400 hover:text-red-600 p-1 rounded transition-colors">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                ` : ''}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    ${skills.map((skill, index) => `
+                        <div class="skill-item group" style="animation-delay: ${index * 0.05}s">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">${skill.name}</span>
+                                <span class="text-xs font-mono" style="color: ${color};">${skill.level}%</span>
+                            </div>
+                            <div class="h-2 rounded-full overflow-hidden" style="background: ${color}15;">
+                                <div class="skill-bar h-full rounded-full transition-all duration-1000 ease-out"
+                                     style="width: 0%; background: linear-gradient(90deg, ${color}90, ${color});"
+                                     data-width="${skill.level}%"></div>
                             </div>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                            <div class="skill-progress h-3 rounded-full transition-all duration-2000 ease-out" style="width: ${skill.level}%"></div>
-                        </div>
-                    </div>
-                `).join('')}
+                    `).join('')}
+                </div>
             </div>
         `;
 
         container.appendChild(categoryDiv);
     });
+
+    // Animate skill bars on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bars = entry.target.querySelectorAll('.skill-bar');
+                bars.forEach((bar, index) => {
+                    const width = bar.getAttribute('data-width');
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, index * 50);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.glass-effect').forEach(el => observer.observe(el));
 }
 
 // Render Projects
@@ -468,91 +644,111 @@ function renderProjects() {
 
     allProjects.forEach((project, index) => {
         const projectDiv = document.createElement('div');
-        projectDiv.className = 'project-card bg-white rounded-2xl shadow-xl overflow-hidden fade-in-up';
+        projectDiv.className = 'reveal project-card';
+        projectDiv.style.animationDelay = `${index * 0.1}s`;
+
+        // Random accent color for variety - softer tones
+        const accentColors = ['#4A9EE0', '#6CCF7F', '#C099E8', '#E8935A', '#E86B6B'];
+        const accentColor = accentColors[index % accentColors.length];
 
         projectDiv.innerHTML = `
-            <div class="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                ${project.image ?
-                    `<img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">` :
-                    `<div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-code text-3xl mb-2 opacity-80"></i>
-                            <h4 class="text-lg font-bold">${project.title.substring(0, 15)}${project.title.length > 15 ? '...' : ''}</h4>
-                        </div>
-                    </div>`
-                }
-
-                ${isEditMode ? `
-                    <div class="absolute top-2 right-2 flex space-x-1">
-                        <button onclick="editProject('${project.id}')" class="bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-md hover:bg-white shadow-sm transition-all">
-                            <i class="fas fa-edit text-sm"></i>
-                        </button>
-                        <button onclick="deleteProject('${project.id}')" class="bg-white/90 backdrop-blur-sm text-red-600 p-2 rounded-md hover:bg-white shadow-sm transition-all">
-                            <i class="fas fa-trash text-sm"></i>
-                        </button>
-                    </div>
-                ` : ''}
-
-                <div class="absolute top-2 left-2">
-                    <span class="bg-blue-600 text-white px-2 py-1 rounded-md text-xs font-medium">
-                        Featured
-                    </span>
-                </div>
-
-                <div class="absolute bottom-2 right-2 flex space-x-2">
-                    <a href="${project.githubUrl}" target="_blank" class="bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-md hover:bg-white hover:text-blue-600 shadow-sm transition-all group">
-                        <i class="fab fa-github text-sm group-hover:scale-110 transition-transform"></i>
-                    </a>
-                    ${project.liveUrl ? `
-                        <a href="${project.liveUrl}" target="_blank" class="bg-white/90 backdrop-blur-sm text-gray-700 p-2 rounded-md hover:bg-white hover:text-green-600 shadow-sm transition-all group">
-                            <i class="fas fa-external-link-alt text-sm group-hover:scale-110 transition-transform"></i>
-                        </a>
-                    ` : ''}
-                </div>
-            </div>
-
-            <div class="p-5">
-                <div class="flex items-start justify-between mb-3">
-                    <h3 class="text-xl font-bold text-gray-900 leading-tight">${project.title}</h3>
-                    <button onclick="toggleDescription('${project.id}')" class="text-gray-400 hover:text-gray-600 ml-2 flex-shrink-0">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>
-
-                <div id="desc-${project.id}" class="hidden mb-4">
-                    <p class="text-gray-600 text-sm leading-relaxed">${project.description}</p>
-                </div>
-
-                <div class="flex flex-wrap gap-1.5 mb-4">
-                    ${project.technologies.slice(0, 4).map(tech =>
-                        `<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition-colors cursor-default">${tech}</span>`
-                    ).join('')}
-                    ${project.technologies.length > 4 ?
-                        `<span class="text-gray-500 text-xs font-medium px-2 py-1">+${project.technologies.length - 4}</span>` : ''
+            <div class="glass-effect rounded-xl overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-300 group hover:transform hover:scale-[1.02]"
+                 style="box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <div class="relative h-48 overflow-hidden" style="background: linear-gradient(135deg, ${accentColor}20, ${accentColor}05);">
+                    ${project.image ?
+                        `<img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">` :
+                        `<div class="w-full h-full flex items-center justify-center relative">
+                            <div class="absolute inset-0 opacity-10">
+                                <div class="font-mono text-xs text-white/30 p-4 leading-relaxed overflow-hidden h-full">
+const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
+  tech: [${project.technologies.slice(0, 3).map(t => `"${t}"`).join(', ')}],
+  status: "featured",
+  type: "production"
+};
+                                </div>
+                            </div>
+                            <div class="text-center z-10">
+                                <i class="fas fa-code text-4xl mb-3" style="color: ${accentColor};"></i>
+                                <h4 class="text-lg font-bold font-display text-white/90">${project.title.substring(0, 20)}${project.title.length > 20 ? '...' : ''}</h4>
+                            </div>
+                        </div>`
                     }
-                </div>
 
-                <div class="flex items-center justify-between">
-                    <div class="flex space-x-3">
-                        <a href="${project.githubUrl}" target="_blank" class="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm">
-                            <i class="fab fa-github mr-1"></i>Code
+                    ${isEditMode ? `
+                        <div class="absolute top-3 right-3 flex space-x-2">
+                            <button onclick="editProject('${project.id}')" class="glass-effect text-white p-2 rounded-lg hover:bg-white/20 transition-all">
+                                <i class="fas fa-edit text-sm"></i>
+                            </button>
+                            <button onclick="deleteProject('${project.id}')" class="glass-effect text-red-400 p-2 rounded-lg hover:bg-red-500/20 transition-all">
+                                <i class="fas fa-trash text-sm"></i>
+                            </button>
+                        </div>
+                    ` : ''}
+
+                    <div class="absolute top-3 left-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-mono font-medium"
+                              style="background: ${accentColor}30; color: ${accentColor}; border: 1px solid ${accentColor}50;">
+                            <i class="fas fa-star mr-1"></i>Featured
+                        </span>
+                    </div>
+
+                    <div class="absolute bottom-3 right-3 flex space-x-2">
+                        <a href="${project.githubUrl}" target="_blank"
+                           class="glass-effect text-white p-2 rounded-lg hover:bg-white/20 transition-all group/btn cursor-hover">
+                            <i class="fab fa-github text-lg group-hover/btn:scale-110 transition-transform"></i>
                         </a>
                         ${project.liveUrl ? `
-                            <a href="${project.liveUrl}" target="_blank" class="text-gray-600 hover:text-green-600 transition-colors font-medium text-sm">
-                                <i class="fas fa-external-link-alt mr-1"></i>Live
+                            <a href="${project.liveUrl}" target="_blank"
+                               class="glass-effect text-white p-2 rounded-lg hover:bg-white/20 transition-all group/btn cursor-hover">
+                                <i class="fas fa-external-link-alt text-lg group-hover/btn:scale-110 transition-transform"></i>
                             </a>
                         ` : ''}
                     </div>
-                    <button onclick="toggleTechStack('${project.id}')" class="text-xs text-blue-600 hover:text-blue-700 font-medium">
-                        <i class="fas fa-layer-group mr-1"></i>Tech Stack
-                    </button>
                 </div>
 
-                <div id="tech-${project.id}" class="hidden mt-3 pt-3 border-t border-gray-100">
-                    <div class="flex flex-wrap gap-1">
-                        ${project.technologies.map(tech =>
-                            `<span class="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">${tech}</span>`
+                <div class="p-5" style="background: rgba(13, 17, 23, 0.8);">
+                    <div class="flex items-start justify-between mb-3">
+                        <h3 class="text-xl font-bold font-display text-white leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all">${project.title}</h3>
+                        <button onclick="toggleDescription('${project.id}')" class="text-gray-400 hover:text-white ml-2 flex-shrink-0 transition-colors cursor-hover">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+
+                    <div id="desc-${project.id}" class="hidden mb-4">
+                        <p class="text-gray-400 text-sm leading-relaxed">${project.description}</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${project.technologies.slice(0, 4).map(tech =>
+                            `<span class="px-2 py-1 rounded text-xs font-mono" style="background: ${accentColor}15; color: ${accentColor}; border: 1px solid ${accentColor}30;">${tech}</span>`
                         ).join('')}
+                        ${project.technologies.length > 4 ?
+                            `<span class="text-gray-500 text-xs font-mono px-2 py-1">+${project.technologies.length - 4}</span>` : ''
+                        }
+                    </div>
+
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <div class="flex space-x-4">
+                            <a href="${project.githubUrl}" target="_blank" class="text-gray-400 hover:text-white transition-colors font-medium text-sm cursor-hover">
+                                <i class="fab fa-github mr-1"></i>Code
+                            </a>
+                            ${project.liveUrl ? `
+                                <a href="${project.liveUrl}" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors font-medium text-sm cursor-hover">
+                                    <i class="fas fa-external-link-alt mr-1"></i>Live
+                                </a>
+                            ` : ''}
+                        </div>
+                        <button onclick="toggleTechStack('${project.id}')" class="text-xs font-mono transition-colors cursor-hover" style="color: ${accentColor};">
+                            <i class="fas fa-layer-group mr-1"></i>Stack
+                        </button>
+                    </div>
+
+                    <div id="tech-${project.id}" class="hidden mt-4 pt-4 border-t border-white/10">
+                        <div class="flex flex-wrap gap-2">
+                            ${project.technologies.map(tech =>
+                                `<span class="px-2 py-1 rounded text-xs font-mono" style="background: ${accentColor}15; color: ${accentColor};">${tech}</span>`
+                            ).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -943,6 +1139,75 @@ function sendMessage(event) {
     event.target.reset();
 }
 
+// Contact Form Submission using Web3Forms
+async function sendContactForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const statusDiv = document.getElementById('form-status');
+    const btnText = submitBtn.querySelector('span');
+    const btnIcon = submitBtn.querySelector('i');
+
+    // Get form data
+    const formData = new FormData(form);
+
+    // Show loading state
+    btnText.textContent = 'Sending...';
+    btnIcon.className = 'fas fa-spinner fa-spin mr-2';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Success
+            statusDiv.textContent = '$ Message sent successfully! I will get back to you soon.';
+            statusDiv.className = 'text-center text-sm py-3 rounded-lg mt-4 font-mono';
+            statusDiv.style.background = 'rgba(108, 207, 127, 0.15)';
+            statusDiv.style.color = '#6CCF7F';
+            statusDiv.style.border = '1px solid rgba(108, 207, 127, 0.3)';
+            form.reset();
+
+            // Reset button
+            btnText.textContent = 'Message Sent!';
+            btnIcon.className = 'fas fa-check mr-2';
+
+            setTimeout(() => {
+                btnText.textContent = 'Send Message';
+                btnIcon.className = 'fas fa-paper-plane mr-2';
+                submitBtn.disabled = false;
+                statusDiv.className = 'hidden';
+            }, 5000);
+        } else {
+            throw new Error(result.message || 'Something went wrong');
+        }
+    } catch (error) {
+        // Error
+        statusDiv.textContent = '$ Error: ' + (error.message || 'Failed to send message. Please try again.');
+        statusDiv.className = 'text-center text-sm py-3 rounded-lg mt-4 font-mono';
+        statusDiv.style.background = 'rgba(232, 107, 107, 0.15)';
+        statusDiv.style.color = '#E86B6B';
+        statusDiv.style.border = '1px solid rgba(232, 107, 107, 0.3)';
+
+        // Reset button
+        btnText.textContent = 'Send Message';
+        btnIcon.className = 'fas fa-paper-plane mr-2';
+        submitBtn.disabled = false;
+
+        setTimeout(() => {
+            statusDiv.className = 'hidden';
+        }, 5000);
+    }
+
+    return false;
+}
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -1011,24 +1276,40 @@ function renderAchievements() {
     const container = document.getElementById('achievements-container');
     if (!container || !portfolioData.achievements) return;
 
-    container.innerHTML = portfolioData.achievements.map(achievement => `
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-yellow-500">
+    container.innerHTML = portfolioData.achievements.map((achievement, index) => {
+        // Check if ICPC achievement for special styling
+        const isICPC = achievement.title.toLowerCase().includes('icpc');
+        const color = isICPC ? '#E8935A' : '#6CCF7F';
+
+        return `
+        <div class="glass-effect rounded-xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300 group reveal"
+             style="animation-delay: ${index * 0.1}s; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
             <div class="flex items-start justify-between mb-4">
-                <div class="w-14 h-14 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-trophy text-yellow-600 text-2xl"></i>
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center relative"
+                     style="background: ${color}20; border: 1px solid ${color}40;">
+                    <i class="fas fa-trophy text-xl" style="color: ${color};"></i>
+                    ${isICPC ? `<div class="absolute -top-1 -right-1 w-4 h-4 rounded-full" style="background: ${color};"><i class="fas fa-star text-[8px] text-black flex items-center justify-center w-full h-full"></i></div>` : ''}
                 </div>
-                <span class="text-sm font-semibold text-yellow-600 bg-yellow-50 px-3 py-1.5 rounded-full">
+                <span class="text-sm font-mono px-3 py-1 rounded-lg"
+                      style="background: ${color}20; color: ${color}; border: 1px solid ${color}40;">
                     ${achievement.year}
                 </span>
             </div>
-            <h4 class="text-lg font-bold text-gray-900 mb-3 leading-tight">
+            <h4 class="text-base font-bold font-display text-white mb-3 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-orange-400">
                 ${achievement.title}
             </h4>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <p class="text-gray-400 text-sm leading-relaxed">
                 ${achievement.description}
             </p>
+            ${isICPC ? `
+            <div class="mt-3 pt-3 border-t border-white/10">
+                <span class="text-xs font-mono" style="color: ${color};">
+                    <i class="fas fa-code mr-1"></i>Competitive Programming
+                </span>
+            </div>
+            ` : ''}
         </div>
-    `).join('');
+    `}).join('');
 }
 
 // Render Problem Solving Profiles
@@ -1036,26 +1317,42 @@ function renderProblemSolvingProfiles() {
     const container = document.getElementById('profiles-container');
     if (!container || !portfolioData.problemSolvingProfiles) return;
 
-    container.innerHTML = portfolioData.problemSolvingProfiles.map(profile => `
+    // Platform-specific colors and icons - softer tones
+    const platformStyles = {
+        'Codeforces': { color: '#E86B6B', icon: 'fa-code', iconType: 'fas' },
+        'HackerRank': { color: '#6CCF7F', icon: 'fa-hackerrank', iconType: 'fab' },
+        'Beecrowd': { color: '#4A9EE0', icon: 'fa-laptop-code', iconType: 'fas' },
+        'LeetCode': { color: '#E8935A', icon: 'fa-code', iconType: 'fas' },
+        'default': { color: '#C099E8', icon: 'fa-code', iconType: 'fas' }
+    };
+
+    container.innerHTML = portfolioData.problemSolvingProfiles.map((profile, index) => {
+        const style = platformStyles[profile.platform] || platformStyles['default'];
+        return `
         <a href="${profile.url}" target="_blank" rel="noopener noreferrer"
-           class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 group">
+           class="glass-effect rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group cursor-hover reveal"
+           style="animation-delay: ${index * 0.1}s; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
             <div class="flex flex-col items-center text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-teal-100 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                    <i class="fas fa-code text-green-600 text-3xl"></i>
+                <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative"
+                     style="background: ${style.color}20; border: 1px solid ${style.color}40;">
+                    <i class="${style.iconType} ${style.icon} text-2xl" style="color: ${style.color};"></i>
+                    <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                         style="box-shadow: 0 2px 10px ${style.color}20;"></div>
                 </div>
-                <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
+                <h4 class="text-lg font-bold font-display text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-green-400 group-hover:to-blue-400 transition-all">
                     ${profile.platform}
                 </h4>
-                <p class="text-sm text-gray-600 mb-4 font-mono bg-gray-50 px-4 py-2 rounded-lg">
-                    ${profile.username}
+                <p class="text-sm text-gray-400 mb-4 font-mono px-3 py-1.5 rounded-lg"
+                   style="background: ${style.color}10; border: 1px solid ${style.color}30;">
+                    @${profile.username}
                 </p>
-                <div class="flex items-center text-green-600 text-sm font-semibold group-hover:text-green-700">
+                <div class="flex items-center text-sm font-medium group-hover:gap-2 transition-all" style="color: ${style.color};">
                     <span>View Profile</span>
-                    <i class="fas fa-external-link-alt ml-2 text-xs group-hover:translate-x-1 transition-transform"></i>
+                    <i class="fas fa-arrow-right ml-2 text-xs group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
         </a>
-    `).join('');
+    `}).join('');
 }
 
 // Render Experience
@@ -1064,44 +1361,50 @@ function renderExperience() {
     if (!container || !portfolioData.experience) return;
 
     container.innerHTML = portfolioData.experience.map((exp, index) => `
-        <div class="relative flex items-start mb-10 last:mb-0 fade-in-up" style="animation-delay: ${index * 0.1}s">
+        <div class="relative flex items-start mb-12 last:mb-0 reveal" style="animation-delay: ${index * 0.15}s">
+            <!-- Timeline Line -->
             ${index < portfolioData.experience.length - 1 ? `
-                <div class="absolute left-6 top-16 w-0.5 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
+                <div class="absolute left-6 top-16 w-0.5 h-full" style="background: linear-gradient(to bottom, ${exp.isCurrentRole ? '#6CCF7F' : '#4A9EE0'}, ${exp.isCurrentRole ? '#6CCF7F30' : '#4A9EE030'});"></div>
             ` : ''}
 
-            <div class="w-12 h-12 rounded-full flex items-center justify-center mr-6 z-10 flex-shrink-0 ${
-                exp.isCurrentRole
-                    ? 'bg-gradient-to-r from-green-500 to-teal-600 shadow-lg'
-                    : 'bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg'
-            }">
-                <div class="w-4 h-4 bg-white rounded-full"></div>
+            <!-- Timeline Node -->
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mr-6 z-10 flex-shrink-0 relative"
+                 style="background: ${exp.isCurrentRole ? 'linear-gradient(135deg, #6CCF7F, #3FB950)' : 'linear-gradient(135deg, #4A9EE0, #1F6FEB)'};
+                        box-shadow: 0 2px 10px ${exp.isCurrentRole ? '#6CCF7F20' : '#4A9EE020'};">
+                <div class="w-3 h-3 bg-white rounded-full"></div>
+                ${exp.isCurrentRole ? `<div class="absolute w-full h-full rounded-full animate-ping opacity-30" style="background: #6CCF7F;"></div>` : ''}
             </div>
 
-            <div class="flex-1 bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+            <!-- Content Card -->
+            <div class="flex-1 glass-effect rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group"
+                 style="box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
                 <div class="flex flex-wrap justify-between items-start mb-4 gap-3">
                     <div class="flex-1">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">${exp.position}</h3>
-                        <p class="text-lg font-semibold text-blue-600 mb-1">${exp.company}</p>
-                        <p class="text-sm text-gray-500 flex items-center">
+                        <h3 class="text-xl font-bold font-display text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400">${exp.position}</h3>
+                        <p class="text-lg font-semibold mb-1" style="color: ${exp.isCurrentRole ? '#6CCF7F' : '#4A9EE0'};">
+                            <i class="fas fa-building mr-2 text-sm"></i>${exp.company}
+                        </p>
+                        <p class="text-sm text-gray-400 flex items-center">
                             <i class="fas fa-map-marker-alt mr-2"></i>${exp.location}
                         </p>
                     </div>
                     <div class="flex flex-col items-end gap-2">
-                        <span class="px-4 py-2 rounded-full text-sm font-semibold ${
-                            exp.isCurrentRole
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-gray-100 text-gray-700'
-                        }">
+                        <span class="px-4 py-2 rounded-lg text-sm font-mono"
+                              style="background: ${exp.isCurrentRole ? '#6CCF7F20' : '#4A9EE020'}; color: ${exp.isCurrentRole ? '#6CCF7F' : '#4A9EE0'}; border: 1px solid ${exp.isCurrentRole ? '#6CCF7F40' : '#4A9EE040'};">
                             ${exp.startDate} - ${exp.isCurrentRole ? 'Present' : exp.endDate}
                         </span>
                         ${exp.isCurrentRole ? `
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-600 text-white animate-pulse">
-                                Current
+                            <span class="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1"
+                                  style="background: #6CCF7F; color: #0D1117;">
+                                <span class="w-2 h-2 rounded-full bg-green-900 animate-pulse"></span>
+                                Active
                             </span>
                         ` : ''}
                     </div>
                 </div>
-                <p class="text-gray-600 leading-relaxed">${exp.description}</p>
+                <div class="border-t border-white/10 pt-4 mt-4">
+                    <p class="text-gray-400 leading-relaxed text-sm">${exp.description}</p>
+                </div>
             </div>
         </div>
     `).join('');
@@ -1112,72 +1415,105 @@ function renderEducation() {
     const container = document.getElementById('education-container');
     if (!container || !portfolioData.education) return;
 
-    container.innerHTML = portfolioData.education.map((edu, index) => `
-        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-blue-500 fade-in-up" style="animation-delay: ${index * 0.1}s">
-            <div class="flex items-start justify-between mb-4">
+    const eduColors = ['#C099E8', '#4A9EE0', '#6CCF7F'];
+
+    container.innerHTML = portfolioData.education.map((edu, index) => {
+        const color = eduColors[index % eduColors.length];
+        return `
+        <div class="glass-effect rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group reveal"
+             style="animation-delay: ${index * 0.1}s; box-shadow: 0 0 30px rgba(0,0,0,0.3);">
+            <div class="flex items-start justify-between mb-4 gap-4">
                 <div class="flex items-start space-x-4">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-graduation-cap text-blue-600 text-2xl"></i>
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                         style="background: ${color}20; border: 1px solid ${color}40;">
+                        <i class="fas fa-graduation-cap text-2xl" style="color: ${color};"></i>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">${edu.degree}</h3>
-                        <p class="text-lg font-semibold text-blue-600 mb-1">${edu.field}</p>
-                        <p class="text-gray-700 font-medium">${edu.institution}</p>
+                        <h3 class="text-lg font-bold font-display text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400">${edu.degree}</h3>
+                        <p class="text-base font-semibold mb-1" style="color: ${color};">${edu.field}</p>
+                        <p class="text-gray-400 text-sm flex items-center">
+                            <i class="fas fa-university mr-2 text-xs"></i>${edu.institution}
+                        </p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <span class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-800 whitespace-nowrap">
+                <div class="text-right flex-shrink-0">
+                    <span class="px-3 py-1.5 rounded-lg text-sm font-mono"
+                          style="background: ${color}20; color: ${color}; border: 1px solid ${color}40;">
                         ${edu.startDate} - ${edu.endDate}
                     </span>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
+            <div class="mt-4 pt-4 border-t border-white/10">
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500 font-medium">Result:</span>
-                    <span class="text-sm font-bold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">${edu.result}</span>
+                    <span class="text-sm text-gray-500 font-mono">// result</span>
+                    <span class="text-sm font-bold font-mono px-3 py-1 rounded-lg"
+                          style="background: ${color}15; color: ${color};">${edu.result}</span>
                 </div>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 }
 
 function renderCertifications() {
     const container = document.getElementById('certifications-container');
     if (!container || !portfolioData.certifications) return;
 
-    container.innerHTML = portfolioData.certifications.map((cert, index) => `
-        <div class="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-gray-100 fade-in-up"
-             style="animation-delay: ${index * 0.1}s"
+    const certColors = ['#C099E8', '#E8935A', '#4A9EE0', '#6CCF7F', '#E86B6B', '#8FC7E8', '#6BB3D9'];
+
+    container.innerHTML = portfolioData.certifications.map((cert, index) => {
+        const color = certColors[index % certColors.length];
+        const isTrainer = cert.title.toLowerCase().includes('trainer');
+        return `
+        <div class="glass-effect rounded-xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group reveal"
+             style="animation-delay: ${index * 0.08}s; box-shadow: 0 4px 15px rgba(0,0,0,0.15);"
              onclick="openCertificateModal('${cert.id}')">
-            <div class="relative h-48 overflow-hidden bg-gray-100">
-                <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div class="relative h-44 overflow-hidden" style="background: linear-gradient(135deg, ${color}20, ${color}05);">
+                <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                ${isTrainer ? `
+                <div class="absolute top-3 left-3">
+                    <span class="px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"
+                          style="background: #E8935A; color: #0D1117;">
+                        <i class="fas fa-chalkboard-teacher text-xs"></i>
+                        Trainer
+                    </span>
+                </div>
+                ` : ''}
+
                 <div class="absolute bottom-3 left-3 right-3">
-                    <span class="text-xs font-medium text-white bg-purple-600/90 px-2 py-1 rounded-full">
+                    <span class="text-xs font-mono px-2 py-1 rounded-lg"
+                          style="background: ${color}30; color: ${color}; border: 1px solid ${color}50;">
                         ${cert.startDate === cert.endDate ? cert.endDate : cert.startDate + ' - ' + cert.endDate}
                     </span>
                 </div>
             </div>
-            <div class="p-5">
+            <div class="p-4" style="background: rgba(13, 17, 23, 0.9);">
                 <div class="flex items-start mb-3">
-                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-3">
-                        <i class="fas fa-award text-purple-600"></i>
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mr-3"
+                         style="background: ${color}20; border: 1px solid ${color}40;">
+                        <i class="fas fa-award" style="color: ${color};"></i>
                     </div>
-                    <h4 class="text-sm font-semibold text-gray-900 line-clamp-2">${cert.title}</h4>
+                    <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400">${cert.title}</h4>
                 </div>
-                <div class="space-y-2 text-sm text-gray-600">
-                    <div class="flex items-center">
-                        <i class="fas fa-building mr-2 text-gray-400 text-xs"></i>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center text-gray-400">
+                        <i class="fas fa-building mr-2 text-xs" style="color: ${color}50;"></i>
                         <span class="truncate">${cert.institution}</span>
                     </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt mr-2 text-gray-400 text-xs"></i>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fas fa-map-marker-alt mr-2 text-xs" style="color: ${color}50;"></i>
                         <span>${cert.location}</span>
                     </div>
                 </div>
+                <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-center">
+                    <span class="text-xs font-mono" style="color: ${color};">
+                        <i class="fas fa-expand mr-1"></i>Click to view
+                    </span>
+                </div>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 }
 
 function openCertificateModal(certId) {
