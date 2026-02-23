@@ -56,6 +56,16 @@ export interface Achievement {
   year: string;
 }
 
+export interface Certification {
+  id: string;
+  title: string;
+  institution: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  image: string;
+}
+
 export interface PortfolioData {
   personalInfo: PersonalInfo;
   skills: Skill[];
@@ -63,6 +73,7 @@ export interface PortfolioData {
   experience: Experience[];
   education: Education[];
   achievements?: Achievement[];
+  certifications?: Certification[];
   problemSolvingProfiles?: { platform: string; username: string; url: string }[];
 }
 

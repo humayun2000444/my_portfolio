@@ -188,6 +188,71 @@ const defaultData: PortfolioData = {
       username: "humayun200044",
       url: "https://www.beecrowd.com.br/judge/en/profile/humayun200044"
     }
+  ],
+  certifications: [
+    {
+      id: "1",
+      title: "Signal Transport (SIGTRAN) over secure IPSec Network and Operations & Maintenance of SMSC, VHLR, VMSC and Bulk SMS Platform",
+      institution: "Telcobright Limited",
+      location: "Dhaka, Bangladesh",
+      startDate: "Jan 2026",
+      endDate: "Jan 2026",
+      image: "/assets/certifications/sigtran.jpg"
+    },
+    {
+      id: "2",
+      title: "Hardware Equipment & Software Platform of SBC and Digital Service Platform for BTCL",
+      institution: "Telcobright Limited",
+      location: "Dhaka, Bangladesh",
+      startDate: "Feb 2026",
+      endDate: "Feb 2026",
+      image: "/assets/certifications/sbc.jpg"
+    },
+    {
+      id: "3",
+      title: "Explore Robotics with Embedded Systems",
+      institution: "Daffodil Institute of IT (DIIT) - RCDC",
+      location: "Dhaka, Bangladesh",
+      startDate: "Sep 2024",
+      endDate: "Sep 2024",
+      image: "/assets/certifications/robotics.jpg"
+    },
+    {
+      id: "4",
+      title: "Responsive and Interactive Web Development from Scratch",
+      institution: "Daffodil Institute of IT (DIIT) - RCDC",
+      location: "Dhaka, Bangladesh",
+      startDate: "Jul 2024",
+      endDate: "Sep 2024",
+      image: "/assets/certifications/web-development.jpg"
+    },
+    {
+      id: "5",
+      title: "Unlock your Computer Networking Career with CCNA Basics",
+      institution: "Daffodil Institute of IT (DIIT) - RCDC",
+      location: "Dhaka, Bangladesh",
+      startDate: "Jul 2024",
+      endDate: "Sep 2024",
+      image: "/assets/certifications/ccna.jpg"
+    },
+    {
+      id: "6",
+      title: "Hackathon Participation - CSE Fest 2K24",
+      institution: "Tejgaon College",
+      location: "Dhaka, Bangladesh",
+      startDate: "Dec 2024",
+      endDate: "Dec 2024",
+      image: "/assets/certifications/hackathon.jpg"
+    },
+    {
+      id: "7",
+      title: "Professional Outsourcing Training - Graphic Design",
+      institution: "Learning and Earning Development Project (LEDP) - ICT Division",
+      location: "Dhaka, Bangladesh",
+      startDate: "2020",
+      endDate: "2020",
+      image: "/assets/certifications/graphic-design-ledp.jpg"
+    }
   ]
 };
 
