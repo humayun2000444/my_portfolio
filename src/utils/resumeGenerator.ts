@@ -1,7 +1,12 @@
 import { PortfolioData } from '../types';
 
 export const generateResumeHTML = (data: PortfolioData): string => {
-  const { personalInfo, skills, projects, experience, education } = data;
+  const { personalInfo, skills, projects, experience, education, certifications = [] } = data;
+
+  // Filter to show only Telcobright certifications (SIGTRAN and SBC)
+  const resumeCertifications = certifications.filter(cert =>
+    cert.institution === "Telcobright Limited"
+  );
 
   return `
     <!DOCTYPE html>
@@ -25,7 +30,7 @@ export const generateResumeHTML = (data: PortfolioData): string => {
             .skill-category h4 { font-size: 16px; color: #374151; margin-bottom: 8px; }
             .skill-item { font-size: 14px; margin-bottom: 4px; display: flex; justify-content: space-between; }
             .skill-level { color: #3b82f6; font-weight: 500; }
-            .experience-item, .education-item, .project-item { margin-bottom: 20px; }
+            .experience-item, .education-item, .project-item, .certification-item { margin-bottom: 20px; }
             .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
             .item-title { font-size: 16px; font-weight: 600; color: #1f2937; }
             .item-meta { font-size: 14px; color: #6b7280; }
@@ -116,6 +121,20 @@ export const generateResumeHTML = (data: PortfolioData): string => {
                         <div class="item-meta">${edu.startDate} - ${edu.endDate}</div>
                     </div>
                     <div class="item-description">${edu.institution}${edu.cgpa ? ` | CGPA: ${edu.cgpa}` : ''}</div>
+                </div>
+            `).join('')}
+        </div>` : ''}
+
+        ${resumeCertifications.length > 0 ? `
+        <div class="section">
+            <div class="section-title">Professional Certifications</div>
+            ${resumeCertifications.map(cert => `
+                <div class="certification-item">
+                    <div class="item-header">
+                        <div class="item-title">${cert.title}</div>
+                        <div class="item-meta">${cert.endDate}</div>
+                    </div>
+                    <div class="item-description">${cert.institution} | ${cert.location}</div>
                 </div>
             `).join('')}
         </div>` : ''}

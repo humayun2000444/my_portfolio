@@ -192,7 +192,7 @@ const defaultData: PortfolioData = {
   certifications: [
     {
       id: "1",
-      title: "Signal Transport (SIGTRAN) over secure IPSec Network and Operations & Maintenance of SMSC, VHLR, VMSC and Bulk SMS Platform",
+      title: "Trainer - Signal Transport (SIGTRAN) over secure IPSec Network and Operations & Maintenance of SMSC, VHLR, VMSC and Bulk SMS Platform (10 Days)",
       institution: "Telcobright Limited",
       location: "Dhaka, Bangladesh",
       startDate: "Jan 2026",
@@ -201,7 +201,7 @@ const defaultData: PortfolioData = {
     },
     {
       id: "2",
-      title: "Hardware Equipment & Software Platform of SBC and Digital Service Platform for BTCL",
+      title: "Trainer - Hardware Equipment & Software Platform of SBC and Digital Service Platform for BTCL (5 Days)",
       institution: "Telcobright Limited",
       location: "Dhaka, Bangladesh",
       startDate: "Feb 2026",
