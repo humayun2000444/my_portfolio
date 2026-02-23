@@ -185,6 +185,71 @@ let portfolioData = {
             url: "https://www.beecrowd.com.br/judge/en/profile/humayun200044"
         }
     ],
+    certifications: [
+        {
+            id: "1",
+            title: "Trainer - Signal Transport (SIGTRAN) over secure IPSec Network and Operations & Maintenance of SMSC, VHLR, VMSC and Bulk SMS Platform (10 Days)",
+            institution: "Telcobright Limited",
+            location: "Dhaka, Bangladesh",
+            startDate: "Jan 2026",
+            endDate: "Jan 2026",
+            image: "assets/certifications/sigtran.jpg"
+        },
+        {
+            id: "2",
+            title: "Trainer - Hardware Equipment & Software Platform of SBC and Digital Service Platform for BTCL (5 Days)",
+            institution: "Telcobright Limited",
+            location: "Dhaka, Bangladesh",
+            startDate: "Feb 2026",
+            endDate: "Feb 2026",
+            image: "assets/certifications/sbc.jpg"
+        },
+        {
+            id: "3",
+            title: "Explore Robotics with Embedded Systems",
+            institution: "Daffodil Institute of IT (DIIT) - RCDC",
+            location: "Dhaka, Bangladesh",
+            startDate: "Sep 2024",
+            endDate: "Sep 2024",
+            image: "assets/certifications/robotics.jpg"
+        },
+        {
+            id: "4",
+            title: "Responsive and Interactive Web Development from Scratch",
+            institution: "Daffodil Institute of IT (DIIT) - RCDC",
+            location: "Dhaka, Bangladesh",
+            startDate: "Jul 2024",
+            endDate: "Sep 2024",
+            image: "assets/certifications/web-development.jpg"
+        },
+        {
+            id: "5",
+            title: "Unlock your Computer Networking Career with CCNA Basics",
+            institution: "Daffodil Institute of IT (DIIT) - RCDC",
+            location: "Dhaka, Bangladesh",
+            startDate: "Jul 2024",
+            endDate: "Sep 2024",
+            image: "assets/certifications/ccna.jpg"
+        },
+        {
+            id: "6",
+            title: "Hackathon Participation - CSE Fest 2K24",
+            institution: "Tejgaon College",
+            location: "Dhaka, Bangladesh",
+            startDate: "Dec 2024",
+            endDate: "Dec 2024",
+            image: "assets/certifications/hackathon.jpg"
+        },
+        {
+            id: "7",
+            title: "Professional Outsourcing Training - Graphic Design",
+            institution: "Learning and Earning Development Project (LEDP) - ICT Division",
+            location: "Dhaka, Bangladesh",
+            startDate: "2020",
+            endDate: "2020",
+            image: "assets/certifications/graphic-design-ledp.jpg"
+        }
+    ],
     experience: [
         {
             id: "1",
@@ -285,6 +350,7 @@ function renderPortfolio() {
     renderProjects();
     renderExperience();
     renderEducation();
+    renderCertifications();
     renderAchievements();
     renderProblemSolvingProfiles();
 }
@@ -1073,4 +1139,63 @@ function renderEducation() {
             </div>
         </div>
     `).join('');
+}
+
+function renderCertifications() {
+    const container = document.getElementById('certifications-container');
+    if (!container || !portfolioData.certifications) return;
+
+    container.innerHTML = portfolioData.certifications.map((cert, index) => `
+        <div class="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-gray-100 fade-in-up"
+             style="animation-delay: ${index * 0.1}s"
+             onclick="openCertificateModal('${cert.id}')">
+            <div class="relative h-48 overflow-hidden bg-gray-100">
+                <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute bottom-3 left-3 right-3">
+                    <span class="text-xs font-medium text-white bg-purple-600/90 px-2 py-1 rounded-full">
+                        ${cert.startDate === cert.endDate ? cert.endDate : cert.startDate + ' - ' + cert.endDate}
+                    </span>
+                </div>
+            </div>
+            <div class="p-5">
+                <div class="flex items-start mb-3">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-3">
+                        <i class="fas fa-award text-purple-600"></i>
+                    </div>
+                    <h4 class="text-sm font-semibold text-gray-900 line-clamp-2">${cert.title}</h4>
+                </div>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center">
+                        <i class="fas fa-building mr-2 text-gray-400 text-xs"></i>
+                        <span class="truncate">${cert.institution}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt mr-2 text-gray-400 text-xs"></i>
+                        <span>${cert.location}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openCertificateModal(certId) {
+    const cert = portfolioData.certifications.find(c => c.id === certId);
+    if (!cert) return;
+
+    document.getElementById('modal-title').textContent = cert.title;
+    document.getElementById('modal-image').src = cert.image;
+    document.getElementById('modal-image').alt = cert.title;
+    document.getElementById('modal-institution').textContent = cert.institution;
+    document.getElementById('modal-location').textContent = cert.location;
+    document.getElementById('modal-date').textContent = cert.startDate === cert.endDate ? cert.endDate : cert.startDate + ' - ' + cert.endDate;
+
+    document.getElementById('certificate-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCertificateModal() {
+    document.getElementById('certificate-modal').classList.add('hidden');
+    document.body.style.overflow = '';
 }
