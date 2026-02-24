@@ -1199,94 +1199,119 @@ function importData(event) {
     }
 }
 
-// Resume Download (PDF)
+// Resume Download
 function downloadResume() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const { personalInfo, skills, projects, experience, education, achievements } = portfolioData;
+    const { personalInfo, skills, projects, experience, education } = portfolioData;
 
-    const resumeHTML = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${personalInfo.name} - Resume</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 20px; }
-        .name { font-size: 28px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
-        .title { font-size: 18px; color: #6b7280; margin-bottom: 10px; }
-        .contact { font-size: 14px; color: #6b7280; }
-        .section { margin-bottom: 25px; }
-        .section-title { font-size: 20px; font-weight: bold; color: #1e40af; margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .skill-category h4 { font-size: 16px; color: #374151; margin-bottom: 8px; }
-        .skill-item { font-size: 14px; margin-bottom: 4px; display: flex; justify-content: space-between; }
-        .project-item { margin-bottom: 20px; }
-        .item-title { font-size: 16px; font-weight: 600; color: #1f2937; }
-        .item-description { font-size: 14px; margin-top: 8px; line-height: 1.6; }
-        .tech-tag { background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-right: 5px; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="name">${personalInfo.name}</div>
-        <div class="title">${personalInfo.title}</div>
-        <div class="contact">${personalInfo.email} | ${personalInfo.phone} | ${personalInfo.location}</div>
-    </div>
+    // Build experience HTML
+    let experienceHTML = '';
+    experience.forEach(exp => {
+        experienceHTML += '<div class="experience-item">';
+        experienceHTML += '<div class="item-header"><div>';
+        experienceHTML += '<span class="item-title">' + exp.position + '</span>';
+        experienceHTML += '<span class="item-company"> — ' + exp.company + '</span>';
+        experienceHTML += '</div>';
+        experienceHTML += '<div class="item-meta">' + exp.startDate + ' - ' + (exp.isCurrentRole ? 'Present' : (exp.endDate || 'Present')) + '</div>';
+        experienceHTML += '</div>';
+        experienceHTML += '<div class="item-description">' + exp.description + '</div>';
+        experienceHTML += '</div>';
+    });
 
-    <div class="section">
-        <div class="section-title">Professional Summary</div>
-        <p>${personalInfo.bio}</p>
-    </div>
+    // Build skills HTML
+    let skillsHTML = '';
+    skills.forEach(skill => {
+        skillsHTML += '<span class="skill-tag">' + skill.name + '</span>';
+    });
 
-    <div class="section">
-        <div class="section-title">Technical Skills</div>
-        <div class="skills-grid">
-            ${Object.entries(skills.reduce((acc, skill) => {
-                if (!acc[skill.category]) acc[skill.category] = [];
-                acc[skill.category].push(skill);
-                return acc;
-            }, {})).map(([category, categorySkills]) => `
-                <div>
-                    <h4>${category}</h4>
-                    ${categorySkills.map(skill => `
-                        <div class="skill-item">
-                            <span>${skill.name}</span>
-                            <span>${skill.level}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `).join('')}
-        </div>
-    </div>
+    // Build projects HTML
+    let projectsHTML = '';
+    projects.filter(p => p.featured).forEach(project => {
+        projectsHTML += '<div class="project-item">';
+        projectsHTML += '<div class="item-title">' + project.title + '</div>';
+        projectsHTML += '<div class="item-description">' + project.description.substring(0, 200) + '...</div>';
+        projectsHTML += '<div style="margin-top: 5px; font-size: 11px; color: #2563eb;">';
+        projectsHTML += 'Technologies: ' + project.technologies.slice(0, 6).join(', ');
+        projectsHTML += '</div></div>';
+    });
 
-    <div class="section">
-        <div class="section-title">Featured Projects</div>
-        ${projects.filter(p => p.featured).map(project => `
-            <div class="project-item">
-                <div class="item-title">${project.title}</div>
-                <div class="item-description">${project.description}</div>
-                <div style="margin-top: 8px;">
-                    ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                </div>
-                <div style="margin-top: 8px; font-size: 14px; color: #6b7280;">
-                    GitHub: ${project.githubUrl}
-                </div>
-            </div>
-        `).join('')}
-    </div>
-</body>
-</html>`;
+    // Build education HTML
+    let educationHTML = '';
+    education.forEach(edu => {
+        educationHTML += '<div class="education-item">';
+        educationHTML += '<div class="item-title">' + edu.degree + ' in ' + edu.field + '</div>';
+        educationHTML += '<div class="item-company">' + edu.institution + '</div>';
+        educationHTML += '<div class="item-meta">' + edu.startDate + ' - ' + edu.endDate + (edu.cgpa ? ' | CGPA: ' + edu.cgpa : '') + '</div>';
+        educationHTML += '</div>';
+    });
+
+    const resumeHTML = '<!DOCTYPE html>' +
+'<html lang="en">' +
+'<head>' +
+'    <meta charset="UTF-8">' +
+'    <meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+'    <title>' + personalInfo.name + ' - Resume</title>' +
+'    <style>' +
+'        * { margin: 0; padding: 0; box-sizing: border-box; }' +
+'        body { font-family: Segoe UI, Arial, sans-serif; line-height: 1.5; color: #333; max-width: 800px; margin: 0 auto; padding: 30px; background: #fff; }' +
+'        .header { text-align: center; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 20px; }' +
+'        .name { font-size: 32px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }' +
+'        .title { font-size: 18px; color: #4b5563; margin-bottom: 10px; }' +
+'        .contact { font-size: 13px; color: #6b7280; }' +
+'        .contact a { color: #2563eb; text-decoration: none; }' +
+'        .section { margin-bottom: 22px; }' +
+'        .section-title { font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; text-transform: uppercase; }' +
+'        .bio { font-size: 13px; line-height: 1.7; text-align: justify; }' +
+'        .skills-list { display: flex; flex-wrap: wrap; gap: 8px; }' +
+'        .skill-tag { font-size: 12px; padding: 4px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 15px; display: inline-block; }' +
+'        .experience-item, .education-item, .project-item { margin-bottom: 15px; }' +
+'        .item-header { display: flex; justify-content: space-between; align-items: center; }' +
+'        .item-title { font-size: 14px; font-weight: 600; color: #1f2937; }' +
+'        .item-company { font-size: 13px; color: #4b5563; }' +
+'        .item-meta { font-size: 12px; color: #6b7280; }' +
+'        .item-description { font-size: 12px; margin-top: 5px; line-height: 1.6; color: #4b5563; }' +
+'        @media print { body { padding: 15px; } }' +
+'    </style>' +
+'</head>' +
+'<body>' +
+'    <div class="header">' +
+'        <div class="name">' + personalInfo.name + '</div>' +
+'        <div class="title">' + personalInfo.title + ' at ' + personalInfo.company + '</div>' +
+'        <div class="contact">' +
+             personalInfo.email + ' | ' + personalInfo.phone + ' | ' + personalInfo.location + '<br>' +
+'            <a href="' + personalInfo.linkedinUrl + '">LinkedIn</a> | <a href="' + personalInfo.githubUrl + '">GitHub</a>' +
+'        </div>' +
+'    </div>' +
+'    <div class="section">' +
+'        <div class="section-title">Professional Summary</div>' +
+'        <p class="bio">' + personalInfo.bio + '</p>' +
+'    </div>' +
+'    <div class="section">' +
+'        <div class="section-title">Professional Experience</div>' +
+         experienceHTML +
+'    </div>' +
+'    <div class="section">' +
+'        <div class="section-title">Technical Skills</div>' +
+'        <div class="skills-list">' + skillsHTML + '</div>' +
+'    </div>' +
+'    <div class="section">' +
+'        <div class="section-title">Featured Projects</div>' +
+         projectsHTML +
+'    </div>' +
+'    <div class="section">' +
+'        <div class="section-title">Education</div>' +
+         educationHTML +
+'    </div>' +
+'</body>' +
+'</html>';
 
     const blob = new Blob([resumeHTML], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${personalInfo.name.replace(/\s+/g, '_')}_Resume.html`;
+    link.download = personalInfo.name.replace(/\s+/g, '_') + '_Resume.html';
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
 
