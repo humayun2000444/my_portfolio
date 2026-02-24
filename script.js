@@ -43,27 +43,119 @@ let portfolioData = {
             githubUrl: "https://github.com/humayun2000444",
             liveUrl: "",
             image: "",
-            featured: true
+            featured: true,
+            caseStudy: {
+                problem: "Telecom operators needed a reliable, scalable softswitch solution to handle high-volume VoIP traffic with real-time billing, intelligent routing, and seamless failover capabilities.",
+                solution: "Built an enterprise-grade softswitch using FreeSWITCH ESL integrated with Spring Boot, implementing event-driven architecture for real-time call control and billing operations.",
+                features: [
+                    "Least Cost Routing (LCR) engine with dynamic rate management",
+                    "Real-time prepaid/postpaid billing with balance alerts",
+                    "SIP trunk management with automatic failover",
+                    "Call Detail Records (CDR) with analytics dashboard",
+                    "WebRTC gateway for browser-based calling",
+                    "REST API for third-party integrations"
+                ],
+                challenges: [
+                    { title: "High Concurrency", description: "Handling 5000+ concurrent calls required optimizing FreeSWITCH event handling and implementing connection pooling." },
+                    { title: "Real-time Billing", description: "Implemented Redis-based caching for balance checks to achieve sub-millisecond billing decisions." },
+                    { title: "Failover System", description: "Designed automatic trunk failover with health checks to ensure 99.9% uptime." }
+                ],
+                impact: [
+                    { metric: "5000+", label: "Concurrent Calls" },
+                    { metric: "99.9%", label: "System Uptime" },
+                    { metric: "<100ms", label: "Call Setup Time" },
+                    { metric: "1M+", label: "Daily CDRs Processed" }
+                ],
+                architecture: "Microservices architecture with FreeSWITCH as the media server, Spring Boot for business logic, PostgreSQL for persistent storage, and Redis for caching and session management.",
+                duration: "8 months",
+                role: "Lead Developer",
+                learnings: "Deep understanding of VoIP protocols (SIP, RTP), real-time system design, and telecom billing mechanisms."
+            }
         },
         {
             id: "2",
             title: "Hosted PBX System",
-            description: "Cloud-based Private Branch Exchange (PBX) system providing advanced telephony features for businesses. Includes call routing, IVR (Interactive Voice Response), call recording, voicemail, conference calling, call analytics, and real-time monitoring. Built with FreeSWITCH for reliability and scalability, enabling businesses to manage their phone systems efficiently with features like extension management, call forwarding, time-based routing, and multi-tenant support.",
-            technologies: ["FreeSWITCH", "Asterisk", "Spring Boot", "ReactJS", "WebRTC", "PostgreSQL", "Redis", "REST API"],
+            description: "Production-ready cloud PBX management platform built with React 19 and FusionPBX REST API backend. Features multi-tenant architecture supporting multiple organizations (BTCL, CCL) with configurable profiles, three-tier pricing model (Bronze/Silver/Gold), and 24 distinct management pages. Includes real-time dashboard with call analytics, extension management, IVR builder, call queues, ring groups, conference rooms, active call monitoring, WebDialer softphone, call forwarding, CDR reporting, and comprehensive billing system with invoice generation.",
+            technologies: ["React 19", "Vite", "Tailwind CSS", "FusionPBX", "REST API", "JWT Auth", "Recharts", "Lucide Icons"],
             githubUrl: "https://github.com/humayun2000444",
             liveUrl: "",
             image: "",
-            featured: true
+            featured: true,
+            caseStudy: {
+                problem: "Telecom operators BTCL and CCL needed a modern, user-friendly web interface to manage their hosted PBX services with multi-tenant support, tiered pricing, and comprehensive call management features for enterprise customers.",
+                solution: "Built a feature-rich React 19 application with FusionPBX REST API integration, supporting multiple organization profiles with custom branding, three-tier subscription model with package limits enforcement, and 50+ RESTful endpoints for complete PBX management.",
+                features: [
+                    "Multi-tenant architecture with organization profiles (BTCL, CCL)",
+                    "Three-tier pricing: Bronze (10 ext), Silver (30 ext), Gold (100 ext)",
+                    "Real-time dashboard with call volume charts and analytics",
+                    "Extension management with device type support (IP Phone, Softphone, Mobile)",
+                    "IVR menu builder with DTMF options and audio greetings",
+                    "Call Queues and Ring Groups for team-based routing",
+                    "Conference room management",
+                    "Active call monitoring with hangup/transfer capabilities",
+                    "Draggable WebDialer softphone with dial pad and call controls",
+                    "Call forwarding with DND toggle",
+                    "CDR analytics and summary reports",
+                    "Billing system with invoice generation and PDF download"
+                ],
+                challenges: [
+                    { title: "Multi-Organization Support", description: "Implemented configurable profile system with dynamic theming, API endpoints, and branding for BTCL (green theme) and CCL (navy theme)." },
+                    { title: "Package Limits Validation", description: "Built usePackageLimits hook for frontend enforcement of extension/IVR limits with automatic package info fetching and expiration validation." },
+                    { title: "WebDialer Integration", description: "Created draggable softphone component with DTMF support, call state management, mute/hold/transfer functionality, and duration tracking." },
+                    { title: "Flexible API Integration", description: "Designed system to handle multiple field naming conventions from different backends with automatic response structure detection." }
+                ],
+                impact: [
+                    { metric: "24", label: "Management Pages" },
+                    { metric: "50+", label: "API Endpoints" },
+                    { metric: "3", label: "Pricing Tiers" },
+                    { metric: "2", label: "Organizations Supported" }
+                ],
+                architecture: "React 19 + Vite frontend with Tailwind CSS styling, FusionPBX REST API backend, JWT authentication with role-based access, Recharts for analytics visualization, profile-based configuration system for multi-organization support.",
+                duration: "4 months",
+                role: "Frontend Developer",
+                learnings: "Multi-tenant SaaS architecture, profile-based configuration systems, complex state management for telephony interfaces, and building intuitive UIs for enterprise telecom applications."
+            }
         },
         {
             id: "3",
             title: "Online Exam Proctoring System",
-            description: "Comprehensive AI-powered online exam proctoring system with YOLOv8n object detection and MediaPipe facial recognition. Features include real-time monitoring with dual camera support (desktop + mobile), WebRTC live streaming, Socket.IO communication, multi-role authentication (Student/Teacher/Admin), instant violation alerts, gaze direction analysis, multiple person detection, prohibited device detection (phones, laptops, tablets), window focus monitoring, and comprehensive activity logging. Modern light-themed UI built with React and Tailwind CSS, Flask Python backend with MySQL database, JWT authentication, and role-based access control.",
-            technologies: ["React.js", "Flask", "Python", "MySQL", "YOLOv8n", "MediaPipe", "WebRTC", "Socket.IO", "Tailwind CSS", "JWT", "AI/ML"],
+            description: "Production-ready AI-powered exam proctoring platform with YOLOv8 object detection, InsightFace recognition, and MediaPipe gaze tracking. Features microservices architecture with React 19 frontend, Spring Boot 3.2 API, and Python Flask AI service. Includes real-time WebRTC monitoring with dual camera support, Socket.IO communication, multi-role authentication (Student/Teacher/Admin), live ban/unban system, per-student gaze calibration, voice activity detection, and comprehensive violation tracking with screenshot evidence. Supports MCQ and essay questions with auto-grading and CSV export.",
+            technologies: ["React 19", "Spring Boot 3.2", "Python Flask", "MySQL", "YOLOv8", "InsightFace", "MediaPipe", "WebRTC", "Socket.IO", "JWT", "ONNX Runtime"],
             githubUrl: "https://github.com/humayun2000444/online-exam-proctoring",
             liveUrl: "",
             image: "",
-            featured: true
+            featured: true,
+            caseStudy: {
+                problem: "Educational institutions required a sophisticated, production-ready proctoring solution capable of detecting multiple cheating vectors including prohibited devices, identity fraud, gaze deviation, and voice communication - all while minimizing false positives and maintaining smooth user experience.",
+                solution: "Built a comprehensive microservices-based proctoring platform with dedicated AI service using YOLOv8 for object detection, InsightFace for face recognition, MediaPipe for gaze tracking, and WebRTC VAD for voice detection. Implemented 3-frame temporal smoothing to reduce false positives and per-student gaze calibration for accuracy.",
+                features: [
+                    "YOLOv8 object detection (phones, laptops, smartwatches, headphones)",
+                    "InsightFace + MediaPipe face verification with multi-angle registration",
+                    "Per-student gaze calibration with configurable thresholds",
+                    "WebRTC VAD + LibROSA audio analysis for voice detection",
+                    "Dual camera support (desktop + mobile via QR code)",
+                    "Live ban/unban system with instant full-screen blocking",
+                    "Real-time violation logging with screenshot evidence",
+                    "Multi-tenant academic structure (Department/Batch/Section)",
+                    "MCQ auto-grading and comprehensive CSV export"
+                ],
+                challenges: [
+                    { title: "Real-time AI Processing", description: "Achieved 30-50ms frame analysis using ONNX Runtime optimization and MPS acceleration for Apple Silicon, maintaining 20-30 FPS real-time processing." },
+                    { title: "False Positive Reduction", description: "Implemented 3-frame temporal smoothing confirmation and per-student gaze calibration, reducing false alerts by 85%." },
+                    { title: "Microservices Communication", description: "Used Spring WebFlux for non-blocking async calls between Spring Boot API and Python AI service, ensuring scalable architecture." },
+                    { title: "Multi-Device Streaming", description: "Implemented WebRTC peer-to-peer video with QR-based mobile camera pairing for expanded monitoring coverage." }
+                ],
+                impact: [
+                    { metric: "30-50ms", label: "Frame Analysis" },
+                    { metric: "20-30", label: "Real-time FPS" },
+                    { metric: "85%", label: "False Positive Reduction" },
+                    { metric: "25+", label: "Database Tables" }
+                ],
+                architecture: "Microservices architecture: React 19 + Tailwind CSS frontend, Spring Boot 3.2 API with JPA/Hibernate and WebSocket support, Python Flask AI service with YOLOv8/InsightFace/MediaPipe, MySQL 8.0 database with 25+ tables for users, exams, violations, and academic structure.",
+                duration: "6 months",
+                role: "Full Stack Developer & ML Engineer",
+                learnings: "Advanced computer vision integration, microservices architecture design, real-time WebSocket communication, and building production-grade AI-powered monitoring systems with focus on accuracy and user experience."
+            }
         },
         {
             id: "4",
@@ -342,51 +434,126 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ==================== CUSTOM CURSOR ====================
 function initCustomCursor() {
-    const cursor = document.getElementById('cursor');
-    const cursorDot = document.getElementById('cursor-dot');
+    // Create cursor elements
+    const cursorDot = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    document.body.appendChild(cursorDot);
 
-    if (!cursor || !cursorDot) return;
+    const cursorOutline = document.createElement('div');
+    cursorOutline.className = 'cursor-outline';
+    document.body.appendChild(cursorOutline);
+
+    // Add cursor styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.2s ease;
+        }
+        .cursor-outline {
+            width: 35px;
+            height: 35px;
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            opacity: 0.5;
+            transition: transform 0.15s ease-out, opacity 0.2s ease, border-color 0.2s ease;
+        }
+        .cursor-dot.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: var(--accent-green);
+        }
+        .cursor-outline.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            border-color: var(--accent-green);
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none !important; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Track mouse position with smooth follow
+    let mouseX = 0, mouseY = 0;
+    let dotX = 0, dotY = 0;
+    let outlineX = 0, outlineY = 0;
 
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
-    // Use event delegation for hover effect on all interactive elements (including dynamically added ones)
-    document.addEventListener('mouseover', (e) => {
-        const target = e.target.closest('a, button, .cursor-hover, input, textarea');
-        if (target) {
-            cursor.classList.add('hover');
-        }
+    // Animation loop for smooth cursor movement
+    function animateCursor() {
+        // Dot follows closely
+        dotX += (mouseX - dotX) * 0.5;
+        dotY += (mouseY - dotY) * 0.5;
+        cursorDot.style.left = dotX + 'px';
+        cursorDot.style.top = dotY + 'px';
+
+        // Outline follows with more delay
+        outlineX += (mouseX - outlineX) * 0.15;
+        outlineY += (mouseY - outlineY) * 0.15;
+        cursorOutline.style.left = outlineX + 'px';
+        cursorOutline.style.top = outlineY + 'px';
+
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover effects on interactive elements
+    const hoverElements = document.querySelectorAll('a, button, .card, .cursor-hover, input, textarea, [onclick]');
+    hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursorDot.classList.add('hover');
+            cursorOutline.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursorDot.classList.remove('hover');
+            cursorOutline.classList.remove('hover');
+        });
     });
 
-    document.addEventListener('mouseout', (e) => {
-        const target = e.target.closest('a, button, .cursor-hover, input, textarea');
-        if (target) {
-            cursor.classList.remove('hover');
-        }
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+        cursorDot.style.opacity = '0';
+        cursorOutline.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+        cursorDot.style.opacity = '1';
+        cursorOutline.style.opacity = '0.5';
     });
 }
 
-// ==================== CODE RAIN BACKGROUND ====================
+// ==================== CODE RAIN BACKGROUND (SIMPLIFIED) ====================
 function initCodeRain() {
     const codeRain = document.getElementById('code-rain');
     if (!codeRain) return;
 
-    const codeChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン{}[]()<>=+-*/&|!?;:';
-    const columnCount = Math.floor(window.innerWidth / 20);
+    // Reduced columns for better performance
+    const codeChars = '01{}[]<>=;:';
+    const columnCount = Math.floor(window.innerWidth / 60); // Less columns
 
     for (let i = 0; i < columnCount; i++) {
         const column = document.createElement('div');
         column.className = 'code-column';
-        column.style.left = (i * 20) + 'px';
-        column.style.animationDuration = (15 + Math.random() * 20) + 's';
-        column.style.animationDelay = (Math.random() * 10) + 's';
+        column.style.left = (i * 60) + 'px';
+        column.style.animationDuration = (20 + Math.random() * 15) + 's'; // Slower
+        column.style.animationDelay = (Math.random() * 5) + 's';
 
         let text = '';
-        const charCount = Math.floor(10 + Math.random() * 20);
+        const charCount = Math.floor(5 + Math.random() * 10); // Less characters
         for (let j = 0; j < charCount; j++) {
             text += codeChars[Math.floor(Math.random() * codeChars.length)] + '<br>';
         }
@@ -738,9 +905,16 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
                                 </a>
                             ` : ''}
                         </div>
-                        <button onclick="toggleTechStack('${project.id}')" class="text-xs font-mono transition-colors cursor-hover" style="color: ${accentColor};">
-                            <i class="fas fa-layer-group mr-1"></i>Stack
-                        </button>
+                        <div class="flex space-x-3">
+                            ${project.caseStudy ? `
+                                <button onclick="openCaseStudyModal('${project.id}')" class="text-xs font-mono px-2 py-1 rounded transition-colors cursor-hover" style="background: ${accentColor}20; color: ${accentColor}; border: 1px solid ${accentColor}40;">
+                                    <i class="fas fa-book-open mr-1"></i>Case Study
+                                </button>
+                            ` : ''}
+                            <button onclick="toggleTechStack('${project.id}')" class="text-xs font-mono transition-colors cursor-hover" style="color: ${accentColor};">
+                                <i class="fas fa-layer-group mr-1"></i>Stack
+                            </button>
+                        </div>
                     </div>
 
                     <div id="tech-${project.id}" class="hidden mt-4 pt-4 border-t border-white/10">
@@ -1534,4 +1708,348 @@ function openCertificateModal(certId) {
 function closeCertificateModal() {
     document.getElementById('certificate-modal').classList.add('hidden');
     document.body.style.overflow = '';
+}
+
+// Case Study Modal Functions
+function openCaseStudyModal(projectId) {
+    const project = portfolioData.projects.find(p => p.id === projectId);
+    if (!project || !project.caseStudy) return;
+
+    const cs = project.caseStudy;
+
+    // Title
+    document.getElementById('cs-title').textContent = project.title;
+
+    // Meta info
+    document.getElementById('cs-meta').innerHTML = `
+        <span><i class="fas fa-user mr-1"></i>${cs.role}</span>
+        <span><i class="fas fa-clock mr-1"></i>${cs.duration}</span>
+    `;
+
+    // Problem & Solution
+    document.getElementById('cs-problem').textContent = cs.problem;
+    document.getElementById('cs-solution').textContent = cs.solution;
+
+    // Impact metrics
+    document.getElementById('cs-impact').innerHTML = cs.impact.map(item => `
+        <div class="text-center p-4 rounded-xl" style="background: var(--bg-tertiary);">
+            <div class="text-2xl font-bold font-mono" style="color: var(--accent-green);">${item.metric}</div>
+            <div class="text-xs text-gray-400 mt-1">${item.label}</div>
+        </div>
+    `).join('');
+
+    // Features
+    document.getElementById('cs-features').innerHTML = cs.features.map(feature => `
+        <div class="flex items-start p-3 rounded-lg" style="background: var(--bg-tertiary);">
+            <i class="fas fa-check text-xs mt-1 mr-3" style="color: var(--accent-green);"></i>
+            <span class="text-sm text-gray-300">${feature}</span>
+        </div>
+    `).join('');
+
+    // Challenges
+    document.getElementById('cs-challenges').innerHTML = cs.challenges.map(challenge => `
+        <div class="p-4 rounded-xl" style="background: var(--bg-tertiary);">
+            <h4 class="text-sm font-semibold text-white mb-2">${challenge.title}</h4>
+            <p class="text-xs text-gray-400">${challenge.description}</p>
+        </div>
+    `).join('');
+
+    // Architecture
+    document.getElementById('cs-architecture').textContent = cs.architecture;
+
+    // Technologies
+    document.getElementById('cs-technologies').innerHTML = project.technologies.map(tech => `
+        <span class="px-3 py-1.5 rounded-lg text-xs font-mono" style="background: var(--accent-blue); color: var(--bg-primary);">${tech}</span>
+    `).join('');
+
+    // Learnings
+    document.getElementById('cs-learnings').textContent = cs.learnings;
+
+    // Links
+    document.getElementById('cs-links').innerHTML = `
+        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-hover" style="background: var(--bg-tertiary); color: var(--text-primary);"><i class="fab fa-github mr-2"></i>View Source Code</a>` : ''}
+        ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" class="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-hover" style="background: var(--accent-green); color: var(--bg-primary);"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>` : ''}
+    `;
+
+    document.getElementById('case-study-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCaseStudyModal() {
+    document.getElementById('case-study-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Download Modal Functions
+function showDownloadModal() {
+    document.getElementById('download-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDownloadModal() {
+    document.getElementById('download-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Generate Resume HTML Content
+function getResumeHTML() {
+    const { personalInfo, skills, projects, experience, education, achievements, certifications } = portfolioData;
+
+    return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${personalInfo.name} - Resume</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #333; max-width: 800px; margin: 0 auto; padding: 30px; background: #fff; }
+        .header { text-align: center; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 20px; }
+        .name { font-size: 32px; font-weight: bold; color: #1e40af; margin-bottom: 5px; letter-spacing: 1px; }
+        .title { font-size: 18px; color: #4b5563; margin-bottom: 10px; font-weight: 500; }
+        .contact { font-size: 13px; color: #6b7280; }
+        .contact a { color: #2563eb; text-decoration: none; }
+        .section { margin-bottom: 22px; }
+        .section-title { font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .bio { font-size: 13px; line-height: 1.7; text-align: justify; color: #374151; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { font-size: 12px; padding: 4px 10px; background: #eff6ff; color: #1d4ed8; border-radius: 15px; font-weight: 500; }
+        .experience-item, .education-item, .project-item { margin-bottom: 15px; }
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+        .item-title { font-size: 14px; font-weight: 600; color: #1f2937; }
+        .item-company { font-size: 13px; color: #4b5563; font-weight: 500; }
+        .item-meta { font-size: 12px; color: #6b7280; }
+        .item-description { font-size: 12px; margin-top: 5px; line-height: 1.6; color: #4b5563; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media print {
+            body { padding: 15px; font-size: 11px; }
+            .name { font-size: 26px; }
+            .section-title { font-size: 14px; }
+            .section { margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="name">${personalInfo.name}</div>
+        <div class="title">${personalInfo.title} at ${personalInfo.company}</div>
+        <div class="contact">
+            ${personalInfo.email} | ${personalInfo.phone} | ${personalInfo.location}<br>
+            <a href="${personalInfo.linkedinUrl}">LinkedIn</a> | <a href="${personalInfo.githubUrl}">GitHub</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Professional Summary</div>
+        <p class="bio">${personalInfo.bio}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Professional Experience</div>
+        ${experience.map(exp => `
+            <div class="experience-item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-title">${exp.position}</span>
+                        <span class="item-company"> — ${exp.company}</span>
+                    </div>
+                    <div class="item-meta">${exp.startDate} - ${exp.isCurrentRole ? 'Present' : (exp.endDate || 'Present')}</div>
+                </div>
+                <div class="item-description">${exp.description}</div>
+            </div>
+        `).join('')}
+    </div>
+
+    <div class="section">
+        <div class="section-title">Technical Skills</div>
+        <div class="skills-grid">
+            ${skills.map(skill => `<span class="skill-tag">${skill.name}</span>`).join('')}
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Featured Projects</div>
+        ${projects.filter(p => p.featured).map(project => `
+            <div class="project-item">
+                <div class="item-title">${project.title}</div>
+                <div class="item-description">${project.description.substring(0, 250)}${project.description.length > 250 ? '...' : ''}</div>
+                <div style="margin-top: 5px; font-size: 11px; color: #2563eb;">
+                    Technologies: ${project.technologies.join(', ')}
+                </div>
+            </div>
+        `).join('')}
+    </div>
+
+    <div class="two-column">
+        <div class="section">
+            <div class="section-title">Education</div>
+            ${education.map(edu => `
+                <div class="education-item">
+                    <div class="item-title">${edu.degree}</div>
+                    <div class="item-company">${edu.institution}</div>
+                    <div class="item-meta">${edu.field} | ${edu.startDate} - ${edu.endDate}${edu.cgpa ? ` | CGPA: ${edu.cgpa}` : ''}</div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="section">
+            <div class="section-title">Achievements</div>
+            ${achievements.slice(0, 4).map(ach => `
+                <div style="margin-bottom: 8px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #1f2937;">${ach.title}</div>
+                    <div style="font-size: 11px; color: #6b7280;">${ach.year}</div>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+</body>
+</html>`;
+}
+
+// Generate PDF using jsPDF
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const { personalInfo, skills, projects, experience, education, achievements } = portfolioData;
+
+    let y = 20;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const contentWidth = pageWidth - 2 * margin;
+
+    // Header
+    doc.setFontSize(24);
+    doc.setTextColor(30, 64, 175);
+    doc.text(personalInfo.name, pageWidth / 2, y, { align: 'center' });
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.setTextColor(75, 85, 99);
+    doc.text(personalInfo.title + ' at ' + personalInfo.company, pageWidth / 2, y, { align: 'center' });
+    y += 7;
+
+    doc.setFontSize(10);
+    doc.setTextColor(107, 114, 128);
+    doc.text(personalInfo.email + ' | ' + personalInfo.phone + ' | ' + personalInfo.location, pageWidth / 2, y, { align: 'center' });
+    y += 12;
+
+    // Line separator
+    doc.setDrawColor(37, 99, 235);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 10;
+
+    // Professional Summary
+    doc.setFontSize(12);
+    doc.setTextColor(30, 64, 175);
+    doc.text('PROFESSIONAL SUMMARY', margin, y);
+    y += 7;
+
+    doc.setFontSize(10);
+    doc.setTextColor(55, 65, 81);
+    const bioLines = doc.splitTextToSize(personalInfo.bio, contentWidth);
+    doc.text(bioLines, margin, y);
+    y += bioLines.length * 5 + 8;
+
+    // Experience
+    doc.setFontSize(12);
+    doc.setTextColor(30, 64, 175);
+    doc.text('PROFESSIONAL EXPERIENCE', margin, y);
+    y += 7;
+
+    experience.forEach(exp => {
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+        doc.setFontSize(11);
+        doc.setTextColor(31, 41, 55);
+        doc.text(exp.position + ' — ' + exp.company, margin, y);
+
+        doc.setFontSize(9);
+        doc.setTextColor(107, 114, 128);
+        const dateText = exp.startDate + ' - ' + (exp.isCurrentRole ? 'Present' : (exp.endDate || 'Present'));
+        doc.text(dateText, pageWidth - margin, y, { align: 'right' });
+        y += 5;
+
+        doc.setFontSize(9);
+        doc.setTextColor(75, 85, 99);
+        const descLines = doc.splitTextToSize(exp.description, contentWidth);
+        doc.text(descLines.slice(0, 3), margin, y);
+        y += Math.min(descLines.length, 3) * 4 + 6;
+    });
+
+    // Skills
+    if (y > 240) {
+        doc.addPage();
+        y = 20;
+    }
+    doc.setFontSize(12);
+    doc.setTextColor(30, 64, 175);
+    doc.text('TECHNICAL SKILLS', margin, y);
+    y += 7;
+
+    doc.setFontSize(9);
+    doc.setTextColor(55, 65, 81);
+    const skillsText = skills.map(s => s.name).join(', ');
+    const skillLines = doc.splitTextToSize(skillsText, contentWidth);
+    doc.text(skillLines, margin, y);
+    y += skillLines.length * 4 + 8;
+
+    // Education
+    doc.setFontSize(12);
+    doc.setTextColor(30, 64, 175);
+    doc.text('EDUCATION', margin, y);
+    y += 7;
+
+    education.forEach(edu => {
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+        doc.setFontSize(10);
+        doc.setTextColor(31, 41, 55);
+        doc.text(edu.degree + ' in ' + edu.field, margin, y);
+        y += 4;
+
+        doc.setFontSize(9);
+        doc.setTextColor(75, 85, 99);
+        doc.text(edu.institution + ' | ' + edu.startDate + ' - ' + edu.endDate + (edu.cgpa ? ' | CGPA: ' + edu.cgpa : ''), margin, y);
+        y += 6;
+    });
+
+    // Save PDF
+    doc.save(personalInfo.name.replace(/\s+/g, '_') + '_Resume.pdf');
+    closeDownloadModal();
+}
+
+// Generate DOCX (downloads as HTML that can be opened in Word)
+function generateDOCX() {
+    const htmlContent = getResumeHTML();
+    const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = portfolioData.personalInfo.name.replace(/\s+/g, '_') + '_Resume.doc';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    closeDownloadModal();
+}
+
+// Generate HTML
+function generateHTML() {
+    const htmlContent = getResumeHTML();
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = portfolioData.personalInfo.name.replace(/\s+/g, '_') + '_Resume.html';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    closeDownloadModal();
 }

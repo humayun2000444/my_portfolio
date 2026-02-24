@@ -38,41 +38,9 @@
             overflow-x: hidden;
         }
 
-        /* Custom cursor only on desktop with pointer device */
-        @media (pointer: fine) {
-            body { cursor: none; }
-            .cursor, .cursor-dot { display: block; }
-        }
-        @media (pointer: coarse), (pointer: none) {
-            .cursor, .cursor-dot { display: none !important; }
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-blue);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease, border-color 0.3s ease, background 0.3s ease;
-            transform: translate(-50%, -50%);
-        }
-        .cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-        .cursor.hover {
-            transform: translate(-50%, -50%) scale(1.5);
-            background: rgba(88, 166, 255, 0.1);
-            border-color: var(--accent-green);
+        /* Custom cursor disabled for better performance */
+        .cursor, .cursor-dot {
+            display: none !important;
         }
 
         /* Code Rain Background - Very subtle */
@@ -744,6 +712,77 @@
                         <span id="modal-date"></span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Study Modal -->
+    <div id="case-study-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 overflow-y-auto">
+        <div class="card max-w-4xl w-full my-8" style="max-height: 90vh; overflow-y: auto;">
+            <!-- Header -->
+            <div class="sticky top-0 p-6 border-b border-gray-700 flex items-start justify-between" style="background: var(--bg-secondary);">
+                <div>
+                    <span class="text-xs font-mono px-2 py-1 rounded mb-2 inline-block" style="background: var(--accent-blue); color: var(--bg-primary);">Case Study</span>
+                    <h2 id="cs-title" class="text-2xl font-bold font-display text-white mt-2"></h2>
+                    <div id="cs-meta" class="flex flex-wrap gap-4 mt-3 text-sm text-gray-400"></div>
+                </div>
+                <button onclick="closeCaseStudyModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors cursor-hover flex-shrink-0 ml-4">
+                    <i class="fas fa-times text-gray-400 text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 space-y-8">
+                <!-- Problem & Solution -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-5 rounded-xl" style="background: var(--bg-tertiary);">
+                        <h3 class="text-sm font-mono mb-3" style="color: var(--accent-red);"><i class="fas fa-exclamation-circle mr-2"></i>The Problem</h3>
+                        <p id="cs-problem" class="text-gray-300 text-sm leading-relaxed"></p>
+                    </div>
+                    <div class="p-5 rounded-xl" style="background: var(--bg-tertiary);">
+                        <h3 class="text-sm font-mono mb-3" style="color: var(--accent-green);"><i class="fas fa-lightbulb mr-2"></i>The Solution</h3>
+                        <p id="cs-solution" class="text-gray-300 text-sm leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- Impact Metrics -->
+                <div>
+                    <h3 class="text-sm font-mono mb-4" style="color: var(--accent-purple);"><i class="fas fa-chart-line mr-2"></i>Impact & Results</h3>
+                    <div id="cs-impact" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                </div>
+
+                <!-- Key Features -->
+                <div>
+                    <h3 class="text-sm font-mono mb-4" style="color: var(--accent-blue);"><i class="fas fa-check-circle mr-2"></i>Key Features</h3>
+                    <div id="cs-features" class="grid md:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- Technical Challenges -->
+                <div>
+                    <h3 class="text-sm font-mono mb-4" style="color: var(--accent-orange);"><i class="fas fa-tools mr-2"></i>Technical Challenges</h3>
+                    <div id="cs-challenges" class="space-y-4"></div>
+                </div>
+
+                <!-- Architecture -->
+                <div class="p-5 rounded-xl" style="background: var(--bg-tertiary);">
+                    <h3 class="text-sm font-mono mb-3" style="color: var(--accent-cyan);"><i class="fas fa-sitemap mr-2"></i>Architecture</h3>
+                    <p id="cs-architecture" class="text-gray-300 text-sm leading-relaxed"></p>
+                </div>
+
+                <!-- Technologies -->
+                <div>
+                    <h3 class="text-sm font-mono mb-4" style="color: var(--accent-purple);"><i class="fas fa-layer-group mr-2"></i>Technologies Used</h3>
+                    <div id="cs-technologies" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Learnings -->
+                <div class="p-5 rounded-xl border" style="background: transparent; border-color: var(--border-color);">
+                    <h3 class="text-sm font-mono mb-3" style="color: var(--accent-green);"><i class="fas fa-graduation-cap mr-2"></i>Key Learnings</h3>
+                    <p id="cs-learnings" class="text-gray-300 text-sm leading-relaxed italic"></p>
+                </div>
+
+                <!-- Links -->
+                <div id="cs-links" class="flex flex-wrap gap-4 pt-4 border-t" style="border-color: var(--border-color);"></div>
             </div>
         </div>
     </div>
