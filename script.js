@@ -118,43 +118,93 @@ let portfolioData = {
         },
         {
             id: "3",
-            title: "Online Exam Proctoring System",
-            description: "Production-ready AI-powered exam proctoring platform with YOLOv8 object detection, InsightFace recognition, and MediaPipe gaze tracking. Features microservices architecture with React 19 frontend, Spring Boot 3.2 API, and Python Flask AI service. Includes real-time WebRTC monitoring with dual camera support, Socket.IO communication, multi-role authentication (Student/Teacher/Admin), live ban/unban system, per-student gaze calibration, voice activity detection, and comprehensive violation tracking with screenshot evidence. Supports MCQ and essay questions with auto-grading and CSV export.",
-            technologies: ["React 19", "Spring Boot 3.2", "Python Flask", "MySQL", "YOLOv8", "InsightFace", "MediaPipe", "WebRTC", "Socket.IO", "JWT", "ONNX Runtime"],
+            title: "ExamGuard - AI Exam Proctoring SaaS",
+            description: "Production-grade multi-tenant SaaS exam proctoring platform with AI-powered cheating detection using YOLOv8, InsightFace, and MediaPipe. Features 6-provider LLM failover for AI question generation & grading, hybrid P2P/LiveKit SFU video meetings supporting 100+ participants with Google Meet-style views, real-time proctoring dashboard with composite risk scoring, multi-angle face verification, dual camera monitoring, and comprehensive violation tracking. Built with React 19, Spring Boot 3.2, Python Flask AI service, and MySQL across 35+ tables with full multi-tenant data isolation.",
+            technologies: ["React 19", "Spring Boot 3.2", "Python Flask", "MySQL", "YOLOv8", "InsightFace", "MediaPipe", "LiveKit SFU", "WebRTC", "Socket.IO", "Docker", "JWT", "ONNX Runtime", "Tailwind CSS", "Claude API", "Stripe"],
             githubUrl: "https://github.com/humayun2000444/online-exam-proctoring",
-            liveUrl: "",
+            liveUrl: "https://humayunahmed.me:1234",
             image: "",
             featured: true,
+            status: "featured",
+            type: "production",
             caseStudy: {
-                problem: "Educational institutions required a sophisticated, production-ready proctoring solution capable of detecting multiple cheating vectors including prohibited devices, identity fraud, gaze deviation, and voice communication - all while minimizing false positives and maintaining smooth user experience.",
-                solution: "Built a comprehensive microservices-based proctoring platform with dedicated AI service using YOLOv8 for object detection, InsightFace for face recognition, MediaPipe for gaze tracking, and WebRTC VAD for voice detection. Implemented 3-frame temporal smoothing to reduce false positives and per-student gaze calibration for accuracy.",
+                problem: "Educational institutions needed a comprehensive, production-ready proctoring solution capable of detecting multiple cheating vectors — prohibited devices, identity fraud, gaze deviation, voice communication, and tab switching — while minimizing false positives. They also required integrated exam management with AI-powered question generation, scalable video meetings for virtual classrooms, and multi-tenant SaaS architecture to serve multiple institutions from a single deployment.",
+                solution: "Designed and built ExamGuard, a full-stack microservices SaaS platform with three core services: a Spring Boot 3.2 API handling business logic, authentication, and LLM orchestration; a Python Flask AI service running YOLOv8 object detection, InsightFace face recognition, MediaPipe gaze tracking, and WebRTC VAD voice detection; and a React 19 frontend with real-time WebSocket communication. Implemented a 6-provider LLM failover chain (Claude → Gemini → Groq → Mistral → Cohere → Ollama) for AI question generation and answer grading. Built hybrid video meetings using LiveKit SFU for production (100+ participants) with P2P mesh fallback, featuring Google Meet-style grid/spotlight views. Added multi-tenant data isolation with per-org branding, SMTP configuration, and subscription billing via Stripe.",
                 features: [
-                    "YOLOv8 object detection (phones, laptops, smartwatches, headphones)",
-                    "InsightFace + MediaPipe face verification with multi-angle registration",
-                    "Per-student gaze calibration with configurable thresholds",
-                    "WebRTC VAD + LibROSA audio analysis for voice detection",
-                    "Dual camera support (desktop + mobile via QR code)",
-                    "Live ban/unban system with instant full-screen blocking",
-                    "Real-time violation logging with screenshot evidence",
-                    "Multi-tenant academic structure (Department/Batch/Section)",
-                    "MCQ auto-grading and comprehensive CSV export"
+                    "YOLOv8 object detection across 15 COCO classes (phones, laptops, headphones, books) with adaptive confidence thresholds",
+                    "InsightFace + MediaPipe face verification with multi-angle registration and cosine similarity matching",
+                    "Per-student gaze calibration with 8 detection zones and cross-modal validation (phone + looking away = confirmed cheating)",
+                    "Composite risk scoring (0-100) with temporal smoothing, auto-flagging at 65+ threshold, and liveness detection",
+                    "6-provider LLM failover chain for AI question generation (MCQ, analytical, CQ) and automated answer grading",
+                    "Hybrid LiveKit SFU / P2P mesh video meetings with Grid, Spotlight, and Pin view modes for 100+ participants",
+                    "Real-time proctoring dashboard with live video grid, risk badges, bounding box overlays, and instant ban/unban",
+                    "Dual camera support (desktop + mobile via QR code) with WebRTC streaming and auto-reconnect",
+                    "Multi-tenant SaaS with per-org branding, SMTP, AI API keys, subscription plans, and Stripe billing",
+                    "PDF integrity reports with risk distribution analysis, violation timelines, and screenshot evidence",
+                    "VM/remote desktop detection via WebGL fingerprinting and hardware concurrency analysis",
+                    "Automated email notifications: exam reminders, results, credentials, and custom teacher emails"
                 ],
                 challenges: [
-                    { title: "Real-time AI Processing", description: "Achieved 30-50ms frame analysis using ONNX Runtime optimization and MPS acceleration for Apple Silicon, maintaining 20-30 FPS real-time processing." },
-                    { title: "False Positive Reduction", description: "Implemented 3-frame temporal smoothing confirmation and per-student gaze calibration, reducing false alerts by 85%." },
-                    { title: "Microservices Communication", description: "Used Spring WebFlux for non-blocking async calls between Spring Boot API and Python AI service, ensuring scalable architecture." },
-                    { title: "Multi-Device Streaming", description: "Implemented WebRTC peer-to-peer video with QR-based mobile camera pairing for expanded monitoring coverage." }
+                    { title: "Real-time AI Processing Pipeline", description: "Achieved 30-50ms frame analysis using ONNX Runtime with MPS acceleration on Apple Silicon. Implemented adaptive frame sending (500ms when suspicious, 2000ms when clean) to balance accuracy and bandwidth across concurrent exam sessions." },
+                    { title: "False Positive Reduction", description: "Built an 8-zone spatial detection system with zone multipliers (1.8x for ear proximity), cross-modal validation between detection types, and 1-2.5 second temporal smoothing windows — reducing false alerts by 85% while maintaining detection accuracy." },
+                    { title: "Scalable Video Meetings", description: "Evolved from mesh P2P (max 10 participants) to LiveKit SFU supporting 100+ concurrent users. Implemented hybrid auto-detection based on deployment context, with Google Meet-style Grid/Spotlight/Pin views and auto-spotlight on screen share." },
+                    { title: "Multi-Tenant Data Isolation", description: "Designed organization-scoped repositories with thread-local tenant context, separate SMTP and LLM API key configurations per org, custom branding (logo, colors, favicon), and plan-based feature limits enforced at the service layer." },
+                    { title: "LLM Provider Resilience", description: "Built a 6-provider cascading failover chain (Claude → Gemini → Groq → Mistral → Cohere → Ollama) with tenant-configurable API keys, automatic retry on failure, and AI status monitoring endpoint for provider health checks." },
+                    { title: "Production Deployment", description: "Architected one-click VPS deployment with systemd services, Nginx reverse proxy with Let's Encrypt SSL, Docker-containerized LiveKit SFU, and automated database migrations — all orchestrated through a single deploy.sh script." }
                 ],
                 impact: [
-                    { metric: "30-50ms", label: "Frame Analysis" },
-                    { metric: "20-30", label: "Real-time FPS" },
+                    { metric: "30-50ms", label: "AI Frame Analysis" },
+                    { metric: "100+", label: "Meeting Participants" },
                     { metric: "85%", label: "False Positive Reduction" },
-                    { metric: "25+", label: "Database Tables" }
+                    { metric: "6", label: "LLM Provider Failover" },
+                    { metric: "35+", label: "Database Tables" },
+                    { metric: "21", label: "API Controllers" }
                 ],
-                architecture: "Microservices architecture: React 19 + Tailwind CSS frontend, Spring Boot 3.2 API with JPA/Hibernate and WebSocket support, Python Flask AI service with YOLOv8/InsightFace/MediaPipe, MySQL 8.0 database with 25+ tables for users, exams, violations, and academic structure.",
+                architecture: "Microservices architecture with three core services: React 19 + Tailwind CSS frontend with LiveKit client and Socket.IO for real-time communication; Spring Boot 3.2 API (21 controllers, 25+ services) with JPA/Hibernate, Spring Security JWT, WebFlux async calls, and LiveKit/Stripe SDK integrations; Python Flask AI service with YOLOv8, InsightFace, MediaPipe, and WebRTC VAD running on ONNX Runtime. MySQL 8.0 database with 35+ tables supporting full multi-tenant isolation. Nginx reverse proxy with Let's Encrypt SSL, Docker-containerized LiveKit SFU, and systemd process management.",
                 duration: "6 months",
                 role: "Full Stack Developer & ML Engineer",
-                learnings: "Advanced computer vision integration, microservices architecture design, real-time WebSocket communication, and building production-grade AI-powered monitoring systems with focus on accuracy and user experience."
+                learnings: "End-to-end SaaS architecture design with multi-tenant data isolation, advanced computer vision pipeline optimization for real-time processing, building resilient LLM integrations with cascading failover, scaling WebRTC from P2P mesh to SFU architecture, and deploying production microservices with automated SSL, process management, and one-click deployment scripts."
+            }
+        },
+        {
+            id: "11",
+            title: "FuelTracker BD - National Fuel Monitoring",
+            description: "Web-based fuel distribution tracking and monitoring system built for Bangladesh's fuel crisis, enabling government and fuel pump organizations to track fuel distribution by vehicle registration and driving license. Features multi-role access control (Super Admin, Government, Fuel Station, Vehicle Owner), anti-hoarding system with daily quotas and cooldown periods, real-time fuel stock management, vehicle self-registration with NID/DL verification, role-specific dashboards with analytics, and BSP BRTA verification integration.",
+            technologies: ["Next.js 16", "TypeScript", "Prisma ORM", "MySQL", "NextAuth.js", "Tailwind CSS", "Recharts"],
+            githubUrl: "https://github.com/humayun2000444/fuel-tracker",
+            liveUrl: "https://humayunahmed.me:1235",
+            image: "",
+            featured: true,
+            status: "featured",
+            type: "production",
+            caseStudy: {
+                problem: "Bangladesh's fuel crisis left vehicle owners facing 3-4 hour queues at fuel stations, with no system to prevent hoarding or ensure fair distribution. Government and fuel station operators lacked visibility into dispensing patterns, vehicle histories, and station stock levels.",
+                solution: "Built FuelTracker BD, a full-stack Next.js 16 application with Prisma ORM and MySQL for real-time fuel distribution monitoring. Implemented multi-role access control (Super Admin, Government, Fuel Station, Vehicle Owner) with NextAuth.js JWT authentication. Designed an anti-hoarding system with configurable daily fuel quotas per vehicle type and cooldown periods between refueling. Added BSP BRTA verification for vehicle/license validation and real-time stock management with automatic deduction on dispensing.",
+                features: [
+                    "Multi-role access: Super Admin, Government, Fuel Station, Vehicle Owner with role-specific dashboards",
+                    "Anti-hoarding: configurable daily quotas (Motorcycle 5L, Car 30L, Truck 150L) with cooldown enforcement",
+                    "Vehicle tracking by registration number + driving license combination",
+                    "Self-registration with NID, driving license, DOB, engine/chassis number verification",
+                    "Fuel stock management with auto-deduction and insufficient stock prevention",
+                    "BSP BRTA online verification integration for license validation",
+                    "Role-specific analytics dashboards with Recharts visualizations",
+                    "Login via email or phone with NextAuth.js JWT strategy"
+                ],
+                challenges: [
+                    { title: "Anti-Hoarding Enforcement", description: "Implemented real-time quota and cooldown checks at dispensing time with configurable per-vehicle-type limits, preventing abuse while allowing legitimate refueling within policy bounds." },
+                    { title: "Multi-Role Data Isolation", description: "Designed role-based access control where Government sees all stations, Fuel Stations manage their own stock, and Vehicle Owners view only their vehicles and fuel history." },
+                    { title: "External Verification", description: "Integrated BSP BRTA verification API for driving license and vehicle registration validation using Cheerio web scraping and cookie-based session management." }
+                ],
+                impact: [
+                    { metric: "4", label: "User Roles" },
+                    { metric: "7", label: "Vehicle Types" },
+                    { metric: "6", label: "Database Models" },
+                    { metric: "Real-time", label: "Stock Tracking" }
+                ],
+                architecture: "Next.js 16 App Router with TypeScript, Prisma ORM with MariaDB adapter connecting to MySQL, NextAuth.js JWT authentication, Tailwind CSS styling, Recharts for analytics dashboards. RESTful API routes for all CRUD operations with middleware-based route protection.",
+                duration: "1 week",
+                role: "Full Stack Developer",
+                learnings: "Building government-scale monitoring systems with Next.js 16, implementing complex business rules (quotas, cooldowns) at the database query level, integrating external verification APIs with session management, and designing role-based multi-tenant dashboards."
             }
         },
         {
@@ -894,16 +944,20 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
                         }
                     </div>
 
+                    ${project.liveUrl ? `
+                        <div class="mb-3">
+                            <a href="${project.liveUrl}" target="_blank" class="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-lg text-sm font-semibold transition-all cursor-hover" style="background: linear-gradient(135deg, ${accentColor}, ${accentColor}cc); color: #fff; box-shadow: 0 4px 15px ${accentColor}40;">
+                                <i class="fas fa-play-circle"></i>Live Demo
+                                <i class="fas fa-external-link-alt text-xs opacity-70"></i>
+                            </a>
+                        </div>
+                    ` : ''}
+
                     <div class="flex items-center justify-between pt-3 border-t border-white/10">
                         <div class="flex space-x-4">
                             <a href="${project.githubUrl}" target="_blank" class="text-gray-400 hover:text-white transition-colors font-medium text-sm cursor-hover">
                                 <i class="fab fa-github mr-1"></i>Code
                             </a>
-                            ${project.liveUrl ? `
-                                <a href="${project.liveUrl}" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors font-medium text-sm cursor-hover">
-                                    <i class="fas fa-external-link-alt mr-1"></i>Live
-                                </a>
-                            ` : ''}
                         </div>
                         <div class="flex space-x-3">
                             ${project.caseStudy ? `
