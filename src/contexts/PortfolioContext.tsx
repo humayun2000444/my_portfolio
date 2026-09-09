@@ -33,7 +33,7 @@ const defaultData: PortfolioData = {
     phone: "+880 1789 896378",
     location: "Adabor, Dhaka 1207, Bangladesh",
     company: "Telcobright Limited",
-    bio: "I'm a VoIP and telecom engineer with 3+ years building and debugging the systems that carry real phone calls. At Telcobright I work on carrier-grade softswitch software: FreeSWITCH with ESL control planes in Java and Spring Boot, WebRTC calling through Janus and SIP.js, SIP trunking, and TURN over TLS for networks that block VoIP media. I diagnose faults from SIP traces and packet captures rather than guesswork - one-way audio, dropped calls, registration failures. Alongside the telecom work I build the full stack around it in ReactJS, Node.js and MySQL/PostgreSQL, and deploy with Docker, Nginx and GitHub Actions. ICPC participant, and happiest in R&D - prototyping fast and turning ideas into working systems."
+    bio: "I'm a VoIP and telecom engineer with 3+ years building and debugging the systems that carry real phone calls. At Telcobright I work on carrier-grade softswitch software: FreeSWITCH with ESL control planes in Java and Spring Boot, WebRTC calling through Janus and SIP.js, SIP trunking, and TURN over TLS for networks that block VoIP media. I diagnose faults from SIP traces and packet captures rather than guesswork - one-way audio, dropped calls, registration failures. Alongside the telecom work I build the full stack around it in ReactJS, Node.js and MySQL/PostgreSQL, and deploy with Docker, Nginx and GitHub Actions. ICPC participant, and happiest in R&D - prototyping fast and turning ideas into working systems.",
     profileImage: "",
     linkedinUrl: "https://linkedin.com/in/humayun-ahmed775",
     githubUrl: "https://github.com/humayun2000444"
