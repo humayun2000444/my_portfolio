@@ -169,6 +169,59 @@ let portfolioData = {
             }
         },
         {
+            id: "12",
+            title: "Magic Call - Voice Changer Platform",
+            description: "VoIP voice changer platform with real-time audio processing via C++ JNI native library. Features FreeSWITCH ESL integration for live call voice modification, multiple voice presets (male-to-female, robot, deep voice), user balance management with top-up system, voice purchase marketplace, call history tracking, and admin dashboard. Built with Spring Boot 3.2 backend, Next.js 16 frontend, and native C++ signal processing using Signalsmith Stretch library.",
+            technologies: ["Spring Boot 3.2", "Next.js 16", "C++ JNI", "FreeSWITCH", "MySQL", "JWT", "Tailwind CSS", "Firebase"],
+            githubUrl: "https://github.com/humayun2000444",
+            liveUrl: "https://magiccall.humayunahmed.me",
+            image: "",
+            featured: true,
+            status: "featured",
+            type: "production"
+        },
+        {
+            id: "11",
+            title: "FuelTracker BD - National Fuel Monitoring",
+            description: "Web-based fuel distribution tracking and monitoring system built for Bangladesh's fuel crisis, enabling government and fuel pump organizations to track fuel distribution by vehicle registration and driving license. Features multi-role access control (Super Admin, Government, Fuel Station, Vehicle Owner), anti-hoarding system with daily quotas and cooldown periods, real-time fuel stock management, vehicle self-registration with NID/DL verification, role-specific dashboards with analytics, and BSP BRTA verification integration.",
+            technologies: ["Next.js 16", "TypeScript", "Prisma ORM", "MySQL", "NextAuth.js", "Tailwind CSS", "Recharts"],
+            githubUrl: "https://github.com/humayun2000444/fuel-tracker",
+            liveUrl: "https://fuel.humayunahmed.me",
+            image: "",
+            featured: true,
+            status: "featured",
+            type: "production",
+            caseStudy: {
+                problem: "Bangladesh's fuel crisis left vehicle owners facing 3-4 hour queues at fuel stations, with no system to prevent hoarding or ensure fair distribution. Government and fuel station operators lacked visibility into dispensing patterns, vehicle histories, and station stock levels.",
+                solution: "Built FuelTracker BD, a full-stack Next.js 16 application with Prisma ORM and MySQL for real-time fuel distribution monitoring. Implemented multi-role access control (Super Admin, Government, Fuel Station, Vehicle Owner) with NextAuth.js JWT authentication. Designed an anti-hoarding system with configurable daily fuel quotas per vehicle type and cooldown periods between refueling. Added BSP BRTA verification for vehicle/license validation and real-time stock management with automatic deduction on dispensing.",
+                features: [
+                    "Multi-role access: Super Admin, Government, Fuel Station, Vehicle Owner with role-specific dashboards",
+                    "Anti-hoarding: configurable daily quotas (Motorcycle 5L, Car 30L, Truck 150L) with cooldown enforcement",
+                    "Vehicle tracking by registration number + driving license combination",
+                    "Self-registration with NID, driving license, DOB, engine/chassis number verification",
+                    "Fuel stock management with auto-deduction and insufficient stock prevention",
+                    "BSP BRTA online verification integration for license validation",
+                    "Role-specific analytics dashboards with Recharts visualizations",
+                    "Login via email or phone with NextAuth.js JWT strategy"
+                ],
+                challenges: [
+                    { title: "Anti-Hoarding Enforcement", description: "Implemented real-time quota and cooldown checks at dispensing time with configurable per-vehicle-type limits, preventing abuse while allowing legitimate refueling within policy bounds." },
+                    { title: "Multi-Role Data Isolation", description: "Designed role-based access control where Government sees all stations, Fuel Stations manage their own stock, and Vehicle Owners view only their vehicles and fuel history." },
+                    { title: "External Verification", description: "Integrated BSP BRTA verification API for driving license and vehicle registration validation using Cheerio web scraping and cookie-based session management." }
+                ],
+                impact: [
+                    { metric: "4", label: "User Roles" },
+                    { metric: "7", label: "Vehicle Types" },
+                    { metric: "6", label: "Database Models" },
+                    { metric: "Real-time", label: "Stock Tracking" }
+                ],
+                architecture: "Next.js 16 App Router with TypeScript, Prisma ORM with MariaDB adapter connecting to MySQL, NextAuth.js JWT authentication, Tailwind CSS styling, Recharts for analytics dashboards. RESTful API routes for all CRUD operations with middleware-based route protection.",
+                duration: "1 week",
+                role: "Full Stack Developer",
+                learnings: "Building government-scale monitoring systems with Next.js 16, implementing complex business rules (quotas, cooldowns) at the database query level, integrating external verification APIs with session management, and designing role-based multi-tenant dashboards."
+            }
+        },
+        {
             id: "4",
             title: "WebRTC Call Center",
             description: "Complete WebRTC-based call center solution with queue management, agent dashboard, and real-time communication capabilities for modern customer service.",
