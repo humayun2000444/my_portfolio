@@ -154,7 +154,7 @@ let portfolioData = {
             title: "ExamGuard - AI Exam Proctoring SaaS",
             description: "Production-grade multi-tenant SaaS exam proctoring platform with AI-powered cheating detection using YOLOv8, InsightFace, and MediaPipe. Features 6-provider LLM failover for AI question generation & grading, hybrid P2P/LiveKit SFU video meetings supporting 100+ participants with Google Meet-style views, real-time proctoring dashboard with composite risk scoring, multi-angle face verification, dual camera monitoring, and comprehensive violation tracking. Built with React 19, Spring Boot 3.2, Python Flask AI service, and MySQL across 35+ tables with full multi-tenant data isolation.",
             technologies: ["React 19", "Spring Boot 3.2", "Python Flask", "MySQL", "YOLOv8", "InsightFace", "MediaPipe", "LiveKit SFU", "WebRTC", "Socket.IO", "Docker", "JWT", "ONNX Runtime", "Tailwind CSS", "Claude API", "Stripe"],
-            githubUrl: "https://github.com/humayun2000444/online-exam-proctoring",
+            githubUrl: "",
             liveUrl: "https://proctoring.humayunahmed.me",
             image: "",
             featured: true,
@@ -217,7 +217,7 @@ let portfolioData = {
             title: "FuelTracker BD - National Fuel Monitoring",
             description: "Web-based fuel distribution tracking and monitoring system built for Bangladesh's fuel crisis, enabling government and fuel pump organizations to track fuel distribution by vehicle registration and driving license. Features multi-role access control (Super Admin, Government, Fuel Station, Vehicle Owner), anti-hoarding system with daily quotas and cooldown periods, real-time fuel stock management, vehicle self-registration with NID/DL verification, role-specific dashboards with analytics, and BSP BRTA verification integration.",
             technologies: ["Next.js 16", "TypeScript", "Prisma ORM", "MySQL", "NextAuth.js", "Tailwind CSS", "Recharts"],
-            githubUrl: "https://github.com/humayun2000444/fuel-tracker",
+            githubUrl: "",
             liveUrl: "https://fuel.humayunahmed.me",
             image: "",
             excludeFromResume: true,
@@ -257,9 +257,9 @@ let portfolioData = {
         {
             id: "4",
             title: "WebRTC Call Center",
-            description: "Complete WebRTC-based call center solution with queue management, agent dashboard, and real-time communication capabilities for modern customer service.",
-            technologies: ["WebRTC", "FreeSWITCH", "ReactJS", "Socket.io"],
-            githubUrl: "https://github.com/humayun2000444/WebRTC_Callcenter",
+            description: "Browser-based call centre built on WebRTC: agents take and place calls from the browser with no desk phone, with queue handling, agent state and live call status on one screen.",
+            technologies: ["WebRTC"],
+            githubUrl: "",
             liveUrl: "",
             image: "",
             featured: true
@@ -269,7 +269,7 @@ let portfolioData = {
             title: "NetronSolution WebRTC",
             description: "Enterprise-grade WebRTC communication solution with advanced features for video conferencing, screen sharing, and real-time collaboration.",
             technologies: ["WebRTC", "Janus", "Java"],
-            githubUrl: "https://github.com/humayun2000444/NetronSolution-WebRTC",
+            githubUrl: "",
             liveUrl: "",
             image: "",
             featured: true
@@ -957,10 +957,10 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
                     </div>
 
                     <div class="absolute bottom-3 right-3 flex space-x-2">
-                        <a href="${project.githubUrl}" target="_blank"
+                        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank"
                            class="glass-effect text-white p-2 rounded-lg hover:bg-white/20 transition-all group/btn cursor-hover">
                             <i class="fab fa-github text-lg group-hover/btn:scale-110 transition-transform"></i>
-                        </a>
+                        </a>` : ''}
                         ${project.liveUrl ? `
                             <a href="${project.liveUrl}" target="_blank"
                                class="glass-effect text-white p-2 rounded-lg hover:bg-white/20 transition-all group/btn cursor-hover">
@@ -1002,9 +1002,9 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
 
                     <div class="flex items-center justify-between pt-3 border-t border-white/10">
                         <div class="flex space-x-4">
-                            <a href="${project.githubUrl}" target="_blank" class="text-gray-400 hover:text-white transition-colors font-medium text-sm cursor-hover">
+                            ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="text-gray-400 hover:text-white transition-colors font-medium text-sm cursor-hover">
                                 <i class="fab fa-github mr-1"></i>Code
-                            </a>
+                            </a>` : ''}
                         </div>
                         <div class="flex space-x-3">
                             ${project.caseStudy ? `
