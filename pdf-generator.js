@@ -4,7 +4,7 @@
 function downloadResumePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const { personalInfo, skills, projects, experience, education, achievements, problemSolvingProfiles } = portfolioData;
+    const { personalInfo, skills, projects, experience, education, achievements, problemSolvingProfiles, certifications } = portfolioData;
 
     let yPos = 15;
     const pageHeight = 280;
@@ -127,7 +127,7 @@ function downloadResumePDF() {
     // Projects - Google Style (Shortened for HR scanning) - MOVED UP
     addSectionHeader('Key Projects');
 
-    const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
+    const featuredProjects = projects.filter(p => p.featured && !p.excludeFromResume).slice(0, 5);
     featuredProjects.forEach((project) => {
         checkPageOverflow(18);
 
@@ -232,6 +232,41 @@ function downloadResumePDF() {
             checkPageOverflow(8);
             doc.text(`• ${achievement.description} (${achievement.year})`, margin, yPos);
             yPos += lineHeight;
+        });
+        yPos += 3;
+    }
+
+    // Professional Training & Certifications
+    if (certifications && certifications.length > 0) {
+        addSectionHeader('Professional Training & Certifications');
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+
+        // Trainer-delivered courses first, then training attended.
+        const delivered = certifications.filter(c => /^Trainer\b/i.test(c.title || ''));
+        const attended = certifications.filter(c => !/^Trainer\b/i.test(c.title || ''));
+
+        [...delivered, ...attended].forEach(cert => {
+            const title = (cert.title || '').replace(/^Trainer\s*-\s*/i, '');
+            const isTrainer = /^Trainer\b/i.test(cert.title || '');
+            const label = isTrainer ? `Trainer - ${title}` : title;
+            const lines = doc.splitTextToSize(`• ${label}`, maxWidth - 3);
+
+            checkPageOverflow(lines.length * lineHeight + 5);
+            doc.setFont('helvetica', 'normal');
+            doc.text(lines, margin, yPos);
+            yPos += lines.length * lineHeight;
+
+            if (cert.institution) {
+                doc.setFont('helvetica', 'italic');
+                doc.setTextColor(80, 80, 80);
+                const inst = doc.splitTextToSize(cert.institution, maxWidth - 6);
+                doc.text(inst, margin + 3, yPos);
+                yPos += inst.length * lineHeight;
+                doc.setTextColor(0, 0, 0);
+            }
+            yPos += 1;
         });
         yPos += 3;
     }

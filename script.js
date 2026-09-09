@@ -38,6 +38,37 @@ let portfolioData = {
     ],
     projects: [
         {
+            id: "crm",
+            title: "Contact Centre CRM on FreeSWITCH",
+            description: "Multi-tenant contact centre CRM where the call, the WhatsApp thread, the appointment and the customer record are one record instead of two systems an agent retypes between. One deployment serves multiple companies, each with its own FreeSWITCH domain, users and data, provisioned through a single API call rather than a new server. Agents work in a browser softphone over WebRTC with screen pop, hold, transfer and wrap-up; the caller is identified before the agent says hello. Also covers appointment booking, two-language self-service over IVR/SMS/WhatsApp, omnichannel messaging and agent/call/billing reporting.",
+            technologies: ["FreeSWITCH", "FusionPBX", "WebRTC", "Odoo 19", "Python", "React", "TypeScript", "Quarkus", "Java", "XMPP"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: true,
+            caseStudy: {
+                problem: "Contact centres run the switch and the CRM as two systems: the switch knows about calls and nothing else, the CRM knows about customers and cannot see the phone. The agent sits in the gap retyping, and every question a caller asks about their own history falls into it.",
+                solution: "Built one system where telephony and the customer record share a database, multi-tenant by company rather than by installation, with a single gateway that resolves the tenant, carries identity, drives the IVR dialogue and fans messages out across channels.",
+                features: [
+                    "Browser softphone over WebRTC with screen pop, hold, transfer and wrap-up",
+                    "One FreeSWITCH domain per company, provisioned by API with rollback on each step",
+                    "Appointments with per-resource sessions, slot capacity and customer notifications",
+                    "Self-service booking, checking and cancelling over IVR, SMS and WhatsApp in two languages",
+                    "Omnichannel: WhatsApp and Facebook threads land beside calls and email on the same customer",
+                    "Company-scoped data and users enforced by database record rules, not UI filters",
+                    "Agent performance, call history, appointment load and billing reports as CSV and print-ready PDF",
+                    "One codebase that speaks each industry's vocabulary from a single tenant setting"
+                ],
+                challenges: [
+                    { title: "One product, nine industries, no forks", description: "A hospital calls it an appointment, a courier a delivery, a school a session. Company type became one tenant setting from which every noun on every screen, report and IVR prompt is derived, so a new industry is a table entry rather than a fork." },
+                    { title: "Tenancy that fails safe on live data", description: "Adding multi-tenancy to a system already carrying data is where leaks happen: existing rows belong to nobody and a strict rule hides all of them on release day. Used database-level record rules with a deliberate fail-open on unattributed rows, plus a migration that attributed them from evidence already on file." },
+                    { title: "Answering the phone without an agent, or a language", description: "A free keyword tier runs before any model, the dialogue asks which language to use and remembers it, and anything unrecognised returns 'not handled' so the router hands it to a person - the failure mode is a human being rather than silence." },
+                    { title: "A middle tier that could not reach its own switch", description: "Provisioning went through a service that on one operator had never reached the switch. Read the switch first and found every fallback-written route carried a correct bridge string, so the concern recorded in the code was not borne out by the data; then swapped the order and reported both failure reasons instead of one." }
+                ],
+                impact: "36 screens, 9 industries and 5 companies running on one deployment; 456 commits in 7 weeks as lead engineer."
+            }
+        },
+        {
             id: "1",
             title: "Softswitch VoIP Calling System",
             description: "Enterprise-grade Softswitch VoIP calling system built with FreeSWITCH ESL and Spring Boot for telecommunication operators. Features include intelligent call routing with least-cost routing (LCR), real-time billing engine with prepaid/postpaid support, call detail records (CDR) management, SIP trunk management, concurrent call handling, call quality monitoring (QoS), automated failover and load balancing, WebRTC gateway integration, REST API for system integration, real-time call analytics dashboard, and comprehensive monitoring tools. Handles high-volume call traffic with PostgreSQL database for robust data management.",
@@ -176,6 +207,7 @@ let portfolioData = {
             githubUrl: "https://github.com/humayun2000444",
             liveUrl: "https://magiccall.humayunahmed.me",
             image: "",
+            excludeFromResume: true,
             featured: true,
             status: "featured",
             type: "production"
@@ -188,6 +220,7 @@ let portfolioData = {
             githubUrl: "https://github.com/humayun2000444/fuel-tracker",
             liveUrl: "https://fuel.humayunahmed.me",
             image: "",
+            excludeFromResume: true,
             featured: true,
             status: "featured",
             type: "production",
@@ -1293,7 +1326,7 @@ function downloadResume() {
 
     // Build projects HTML
     let projectsHTML = '';
-    projects.filter(p => p.featured).forEach(project => {
+    projects.filter(p => p.featured && !p.excludeFromResume).forEach(project => {
         projectsHTML += '<div class="project-item">';
         projectsHTML += '<div class="item-title">' + project.title + '</div>';
         projectsHTML += '<div class="item-description">' + project.description.substring(0, 200) + '...</div>';
@@ -1963,7 +1996,7 @@ function getResumeHTML() {
 
     <div class="section">
         <div class="section-title">Featured Projects</div>
-        ${projects.filter(p => p.featured).map(project => `
+        ${projects.filter(p => p.featured && !p.excludeFromResume).map(project => `
             <div class="project-item">
                 <div class="item-title">${project.title}</div>
                 <div class="item-description">${project.description.substring(0, 250)}${project.description.length > 250 ? '...' : ''}</div>

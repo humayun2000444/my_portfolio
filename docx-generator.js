@@ -142,7 +142,7 @@ async function downloadResumeDOCX() {
 
     // Projects (Shortened for HR scanning) - MOVED UP
     children.push(createSectionHeader('Key Projects'));
-    const featuredProjects = projects.filter(p => p.featured).slice(0, 5);
+    const featuredProjects = projects.filter(p => p.featured && !p.excludeFromResume).slice(0, 5);
     featuredProjects.forEach((project) => {
         // Shorten description to first 2 sentences
         const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
