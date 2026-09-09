@@ -287,15 +287,17 @@ const Projects: React.FC = () => {
               </div>
 
               <div className="flex space-x-3">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors"
-                >
-                  <Github size={16} />
-                  <span>Code</span>
-                </a>
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors"
+                  >
+                    <Github size={16} />
+                    <span>Code</span>
+                  </a>
+                )}
                 {project.liveUrl && (
                   <a
                     href={project.liveUrl}
