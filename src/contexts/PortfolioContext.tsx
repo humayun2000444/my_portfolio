@@ -18,8 +18,12 @@ interface PortfolioContextType {
   login: () => void;
   logout: () => void;
   exportToJSON: () => void;
+  resetToPublished: () => void;
   importFromJSON: (data: PortfolioData) => void;
 }
+
+// Increment when defaultData below is edited.
+const DATA_VERSION = 2;
 
 const defaultData: PortfolioData = {
   personalInfo: {
@@ -271,8 +275,20 @@ const PortfolioContext = createContext<PortfolioContextType | undefined>(undefin
 
 export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<PortfolioData>(() => {
-    const saved = localStorage.getItem('portfolioData');
-    return saved ? JSON.parse(saved) : defaultData;
+    // Bump DATA_VERSION whenever defaultData changes, so a published update
+    // replaces stale copies saved in a visitor's browser instead of being
+    // silently overridden by them.
+    try {
+      const savedVersion = localStorage.getItem('portfolioDataVersion');
+      const saved = localStorage.getItem('portfolioData');
+      if (saved && savedVersion === String(DATA_VERSION)) {
+        return JSON.parse(saved) as PortfolioData;
+      }
+      localStorage.removeItem('portfolioData');
+    } catch {
+      // Corrupt or unavailable storage - fall back to the published data.
+    }
+    return defaultData;
   });
 
   const [admin, setAdmin] = useState<AdminState>({
@@ -281,7 +297,12 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
   });
 
   useEffect(() => {
-    localStorage.setItem('portfolioData', JSON.stringify(data));
+    try {
+      localStorage.setItem('portfolioData', JSON.stringify(data));
+      localStorage.setItem('portfolioDataVersion', String(DATA_VERSION));
+    } catch {
+      // Storage full or blocked - the in-memory data still works.
+    }
   }, [data]);
 
   const updatePersonalInfo = (info: Partial<PortfolioData['personalInfo']>) => {
@@ -369,6 +390,16 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
     setAdmin({ isAuthenticated: false, isEditMode: false });
   };
 
+  const resetToPublished = () => {
+    try {
+      localStorage.removeItem('portfolioData');
+      localStorage.removeItem('portfolioDataVersion');
+    } catch {
+      // ignore
+    }
+    setData(defaultData);
+  };
+
   const exportToJSON = () => {
     const dataStr = JSON.stringify(data, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -402,6 +433,7 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
       login,
       logout,
       exportToJSON,
+      resetToPublished,
       importFromJSON
     }}>
       {children}

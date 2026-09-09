@@ -5,7 +5,7 @@ import { downloadResume } from '../utils/resumeGenerator';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data, admin, toggleEditMode, login, logout } = usePortfolio();
+  const { data, admin, toggleEditMode, login, logout, resetToPublished } = usePortfolio();
 
   const handleDownloadResume = () => {
     downloadResume(data);
@@ -86,6 +86,17 @@ const Header: React.FC = () => {
                 >
                   <Settings size={16} />
                   <span>{admin.isEditMode ? 'Exit Edit' : 'Edit'}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    if (window.confirm('Discard local edits and reload the published data? This cannot be undone.')) {
+                      resetToPublished();
+                    }
+                  }}
+                  className="text-gray-500 hover:text-gray-700 text-sm"
+                  title="Discard edits saved in this browser and reload the published data"
+                >
+                  Reset
                 </button>
                 <button
                   onClick={logout}
