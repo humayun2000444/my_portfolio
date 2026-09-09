@@ -37,7 +37,15 @@ export const generateResumeHTML = (data: PortfolioData): string => {
             .item-description { font-size: 14px; margin-top: 8px; line-height: 1.6; }
             .technologies { margin-top: 8px; }
             .tech-tag { display: inline-block; background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-right: 5px; margin-bottom: 3px; }
-            @media print { body { padding: 10px; font-size: 12px; } .name { font-size: 24px; } .section-title { font-size: 18px; } }
+            @page { size: A4; margin: 14mm; }
+            @media print {
+                body { padding: 0; font-size: 12px; max-width: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                .name { font-size: 24px; }
+                .section-title { font-size: 16px; }
+                .section { page-break-inside: avoid; break-inside: avoid; }
+                .experience-item, .education-item, .project-item, .certification-item { page-break-inside: avoid; break-inside: avoid; }
+                .section-title { page-break-after: avoid; break-after: avoid; }
+            }
         </style>
     </head>
     <body>
@@ -145,13 +153,46 @@ export const generateResumeHTML = (data: PortfolioData): string => {
 
 export const downloadResume = (data: PortfolioData) => {
   const htmlContent = generateResumeHTML(data);
-  const blob = new Blob([htmlContent], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${data.personalInfo.name.replace(/\s+/g, '_')}_Resume.html`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  const fileName = `${data.personalInfo.name.replace(/\s+/g, '_')}_Resume`;
+
+  // Open the resume in a hidden iframe and hand it to the browser's print
+  // dialog, where "Save as PDF" produces a proper paginated CV.
+  const frame = document.createElement('iframe');
+  frame.style.position = 'fixed';
+  frame.style.right = '0';
+  frame.style.bottom = '0';
+  frame.style.width = '0';
+  frame.style.height = '0';
+  frame.style.border = '0';
+  document.body.appendChild(frame);
+
+  const doc = frame.contentDocument;
+  if (!doc) {
+    document.body.removeChild(frame);
+    return;
+  }
+
+  doc.open();
+  doc.write(htmlContent);
+  doc.close();
+
+  // The suggested PDF filename comes from the document title.
+  doc.title = fileName;
+
+  const printFrame = () => {
+    const win = frame.contentWindow;
+    if (!win) return;
+    win.focus();
+    win.print();
+    // Give the print dialog time to read the document before cleanup.
+    setTimeout(() => {
+      if (frame.parentNode) frame.parentNode.removeChild(frame);
+    }, 1000);
+  };
+
+  if (frame.contentWindow?.document.readyState === 'complete') {
+    printFrame();
+  } else {
+    frame.onload = printFrame;
+  }
 };

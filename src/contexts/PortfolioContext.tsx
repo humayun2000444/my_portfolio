@@ -24,57 +24,68 @@ interface PortfolioContextType {
 const defaultData: PortfolioData = {
   personalInfo: {
     name: "Humayun Ahmed",
-    title: "Software Engineer",
-    email: "humayun@example.com",
-    phone: "+880-XXX-XXXX",
-    location: "Dhaka, Bangladesh",
+    title: "VoIP & WebRTC Engineer",
+    email: "humayun.ahmed917280@gmail.com",
+    phone: "+880 1789 896378",
+    location: "Adabor, Dhaka 1207, Bangladesh",
     company: "Telcobright Limited",
-    bio: "I'm a Software Engineer with 3+ years of hands-on experience building full-stack applications using Java, Spring Boot, and ReactJS. I specialize in real-time communication systems, with expertise in WebRTC, Janus, and FreeSWITCH for VoIP solutions. I have a strong foundation in data structures and algorithms (ICPC participant) and enjoy debugging complex systems. I'm experienced with DevOps tools like Docker, GitHub Actions, and Nginx. I thrive in R&D environments—prototyping ideas quickly, experimenting with new technologies, and turning concepts into working products.",
+    bio: "I'm a VoIP and telecom engineer with 3+ years building and debugging the systems that carry real phone calls. At Telcobright I work on carrier-grade softswitch software: FreeSWITCH with ESL control planes in Java and Spring Boot, WebRTC calling through Janus and SIP.js, SIP trunking, and TURN over TLS for networks that block VoIP media. I diagnose faults from SIP traces and packet captures rather than guesswork - one-way audio, dropped calls, registration failures. Alongside the telecom work I build the full stack around it in ReactJS, Node.js and MySQL/PostgreSQL, and deploy with Docker, Nginx and GitHub Actions. ICPC participant, and happiest in R&D - prototyping fast and turning ideas into working systems."
     profileImage: "",
-    linkedinUrl: "https://linkedin.com/in/humayun-ahmed",
+    linkedinUrl: "https://linkedin.com/in/humayun-ahmed775",
     githubUrl: "https://github.com/humayun2000444"
   },
   skills: [
-    { id: "1", name: "ReactJS", category: "Frontend", level: 90 },
-    { id: "2", name: "Next.js", category: "Frontend", level: 80 },
-    { id: "3", name: "TypeScript", category: "Frontend", level: 82 },
-    { id: "4", name: "HTML/CSS", category: "Frontend", level: 90 },
-    { id: "5", name: "Node.js", category: "Backend", level: 85 },
-    { id: "6", name: "Java", category: "Backend", level: 88 },
-    { id: "7", name: "Spring Boot", category: "Backend", level: 85 },
-    { id: "8", name: "Python", category: "Backend", level: 75 },
-    { id: "9", name: "C/C++", category: "Backend", level: 82 },
-    { id: "10", name: "MySQL", category: "Database", level: 95 },
-    { id: "11", name: "PostgreSQL", category: "Database", level: 75 },
     { id: "12", name: "FreeSWITCH", category: "VoIP", level: 95 },
     { id: "13", name: "WebRTC", category: "VoIP", level: 85 },
     { id: "14", name: "Janus", category: "VoIP", level: 80 },
+    { id: "19", name: "SIP", category: "VoIP", level: 88 },
+    { id: "20", name: "Asterisk / FusionPBX", category: "VoIP", level: 80 },
+    { id: "6", name: "Java", category: "Backend", level: 88 },
+    { id: "7", name: "Spring Boot", category: "Backend", level: 85 },
+    { id: "5", name: "Node.js", category: "Backend", level: 85 },
+    { id: "9", name: "C/C++", category: "Backend", level: 82 },
+    { id: "8", name: "Python", category: "Backend", level: 75 },
+    { id: "10", name: "MySQL", category: "Database", level: 95 },
+    { id: "11", name: "PostgreSQL", category: "Database", level: 75 },
+    { id: "1", name: "ReactJS", category: "Frontend", level: 90 },
+    { id: "3", name: "TypeScript", category: "Frontend", level: 82 },
+    { id: "2", name: "Next.js", category: "Frontend", level: 80 },
+    { id: "4", name: "HTML/CSS", category: "Frontend", level: 90 },
     { id: "15", name: "Docker", category: "DevOps", level: 75 },
-    { id: "16", name: "LXD", category: "DevOps", level: 70 },
+    { id: "18", name: "Nginx", category: "DevOps", level: 78 },
     { id: "17", name: "GitHub Actions", category: "DevOps", level: 75 },
-    { id: "18", name: "Nginx", category: "DevOps", level: 78 }
+    { id: "16", name: "LXD", category: "DevOps", level: 70 }
   ],
   projects: [
     {
       id: "1",
-      title: "Online Exam Proctoring",
-      description: "Advanced online exam proctoring system with real-time monitoring, AI-powered cheating detection, and secure examination environment.",
-      technologies: ["ReactJS", "WebRTC", "AI/ML", "Node.js"],
-      githubUrl: "https://github.com/humayun2000444/online-exam-proctoring",
+      title: "WebRTC Call Center",
+      description: "Browser-based call centre built on FreeSWITCH: WebRTC softphone for agents, queue and agent-state management over ESL, and real-time call events pushed to the dashboard. No desk phones required.",
+      technologies: ["WebRTC", "FreeSWITCH", "ESL", "ReactJS", "Socket.io"],
+      githubUrl: "",
       image: "",
       featured: true
     },
     {
       id: "2",
-      title: "WebRTC Call Center",
-      description: "Complete WebRTC-based call center solution with queue management, agent dashboard, and real-time communication capabilities.",
-      technologies: ["WebRTC", "FreeSWITCH", "ReactJS", "Socket.io"],
-      githubUrl: "https://github.com/humayun2000444/WebRTC_Callcenter",
+      title: "FreeSWITCH & FusionPBX Deployment",
+      description: "FreeSWITCH and FusionPBX installed and hardened on customer servers: SIP trunks connected and test-called, extensions, IVR and call queues configured, recording enabled, plus Fail2Ban and TLS/SRTP. Handover notes explain every setting.",
+      technologies: ["FreeSWITCH", "FusionPBX", "SIP", "Linux", "Fail2Ban"],
+      githubUrl: "https://github.com/humayun2000444/fusionpbx",
       image: "",
       featured: true
     },
     {
       id: "3",
+      title: "Online Exam Proctoring",
+      description: "Advanced online exam proctoring system with real-time monitoring, AI-powered cheating detection, and secure examination environment.",
+      technologies: ["ReactJS", "WebRTC", "AI/ML", "Node.js"],
+      githubUrl: "",
+      image: "",
+      featured: false
+    },
+    {
+      id: "4",
       title: "Health - Open Source",
       description: "Open-source contribution to a health-related application with modern full-stack architecture.",
       technologies: ["Node.js", "TypeORM", "PostgreSQL", "React.js"],
@@ -114,12 +125,12 @@ const defaultData: PortfolioData = {
   education: [
     {
       id: "1",
-      institution: "Daffodil Institute of IT",
+      institution: "Daffodil Institute of IT (National University)",
       degree: "Bachelor of Science (BSc)",
       field: "Computer Science & Engineering",
       startDate: "2019",
       endDate: "2023",
-      cgpa: 3.19
+      cgpa: 3.20
     },
     {
       id: "2",
