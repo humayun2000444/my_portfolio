@@ -40,6 +40,8 @@ let portfolioData = {
         {
             id: "crm",
             title: "Contact Centre CRM on FreeSWITCH",
+            client: "BTCL, Cosmopolitan Communications Limited",
+            resumeSummary: "Multi-tenant contact centre CRM where the call, the customer record and the appointment live in one system rather than two an agent retypes between. Browser softphone over WebRTC with screen pop, hold, transfer and wrap-up, and one FreeSWITCH domain per company provisioned by API. 36 screens across 9 industries and 5 companies, as lead engineer.",
             description: "Multi-tenant contact centre CRM where the call, the WhatsApp thread, the appointment and the customer record are one record instead of two systems an agent retypes between. One deployment serves multiple companies, each with its own FreeSWITCH domain, users and data, provisioned through a single API call rather than a new server. Agents work in a browser softphone over WebRTC with screen pop, hold, transfer and wrap-up; the caller is identified before the agent says hello. Also covers appointment booking, two-language self-service over IVR/SMS/WhatsApp, omnichannel messaging and agent/call/billing reporting.",
             technologies: ["FreeSWITCH", "FusionPBX", "WebRTC", "Odoo 19", "Python", "React", "TypeScript", "Quarkus", "Java", "XMPP"],
             githubUrl: "",
@@ -71,6 +73,8 @@ let portfolioData = {
         {
             id: "1",
             title: "Softswitch VoIP Calling System",
+            client: "Telecom operators",
+            resumeSummary: "Carrier-grade softswitch on FreeSWITCH ESL and Spring Boot: least-cost routing, real-time prepaid and postpaid billing, CDR management, and SIP trunk failover with health checks. Handles 5,000+ concurrent calls on PostgreSQL, with a REST API and call analytics dashboard for operator integration.",
             description: "Enterprise-grade Softswitch VoIP calling system built with FreeSWITCH ESL and Spring Boot for telecommunication operators. Features include intelligent call routing with least-cost routing (LCR), real-time billing engine with prepaid/postpaid support, call detail records (CDR) management, SIP trunk management, concurrent call handling, call quality monitoring (QoS), automated failover and load balancing, WebRTC gateway integration, REST API for system integration, real-time call analytics dashboard, and comprehensive monitoring tools. Handles high-volume call traffic with PostgreSQL database for robust data management.",
             technologies: ["FreeSWITCH", "ESL (Event Socket Layer)", "Spring Boot", "Java", "VoIP", "SIP Protocol", "WebRTC", "PostgreSQL", "REST API", "CDR Management"],
             githubUrl: "https://github.com/humayun2000444",
@@ -108,6 +112,8 @@ let portfolioData = {
         {
             id: "2",
             title: "Hosted PBX System",
+            client: "BTCL, Cosmopolitan Communications Limited",
+            resumeSummary: "Cloud PBX management platform on the FusionPBX REST API with a React 19 front end, multi-tenant across two operators with a three-tier pricing model. 24 management pages covering extensions, IVR builder, call queues, ring groups, conference rooms, live call monitoring, a WebDialer softphone, CDR reporting and billing.",
             description: "Production-ready cloud PBX management platform built with React 19 and FusionPBX REST API backend. Features multi-tenant architecture supporting multiple organizations (BTCL, CCL) with configurable profiles, three-tier pricing model (Bronze/Silver/Gold), and 24 distinct management pages. Includes real-time dashboard with call analytics, extension management, IVR builder, call queues, ring groups, conference rooms, active call monitoring, WebDialer softphone, call forwarding, CDR reporting, and comprehensive billing system with invoice generation.",
             technologies: ["React 19", "Vite", "Tailwind CSS", "FusionPBX", "REST API", "JWT Auth", "Recharts", "Lucide Icons"],
             githubUrl: "https://github.com/humayun2000444",
@@ -152,6 +158,7 @@ let portfolioData = {
         {
             id: "3",
             title: "ExamGuard - AI Exam Proctoring SaaS",
+            resumeSummary: "Multi-tenant SaaS proctoring platform with AI cheating detection using YOLOv8, InsightFace and MediaPipe at 30-50ms frame analysis, with composite risk scoring. LiveKit SFU video for 100+ participants and a six-provider LLM failover chain for question generation and automated grading.",
             description: "Production-grade multi-tenant SaaS exam proctoring platform with AI-powered cheating detection using YOLOv8, InsightFace, and MediaPipe. Features 6-provider LLM failover for AI question generation & grading, hybrid P2P/LiveKit SFU video meetings supporting 100+ participants with Google Meet-style views, real-time proctoring dashboard with composite risk scoring, multi-angle face verification, dual camera monitoring, and comprehensive violation tracking. Built with React 19, Spring Boot 3.2, Python Flask AI service, and MySQL across 35+ tables with full multi-tenant data isolation.",
             technologies: ["React 19", "Spring Boot 3.2", "Python Flask", "MySQL", "YOLOv8", "InsightFace", "MediaPipe", "LiveKit SFU", "WebRTC", "Socket.IO", "Docker", "JWT", "ONNX Runtime", "Tailwind CSS", "Claude API", "Stripe"],
             githubUrl: "",
@@ -257,6 +264,8 @@ let portfolioData = {
         {
             id: "4",
             title: "WebRTC Call Center",
+            client: "BTCL, Cosmopolitan Communications Limited, Netron Solutions",
+            resumeSummary: "Browser-based call centre on WebRTC: agents take and place calls with no desk phone, with queue handling, agent state and live call status on one screen.",
             description: "Browser-based call centre built on WebRTC: agents take and place calls from the browser with no desk phone, with queue handling, agent state and live call status on one screen.",
             technologies: ["WebRTC"],
             githubUrl: "",
@@ -979,6 +988,7 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
                     </div>
 
                     <div id="desc-${project.id}" class="hidden mb-4">
+                        ${project.client ? `<p class="text-xs text-gray-500 mb-2"><span class="text-gray-400 font-semibold">Client:</span> ${project.client}</p>` : ''}
                         <p class="text-gray-400 text-sm leading-relaxed">${project.description}</p>
                     </div>
 

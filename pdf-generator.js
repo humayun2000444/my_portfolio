@@ -151,15 +151,35 @@ function downloadResumePDF() {
         doc.text(`Tech Stack: ${project.technologies.slice(0, 6).join(', ')}`, margin, yPos);
         yPos += 5;
 
-        // Description - Shortened to first 2 sentences or 150 chars
+        // Client, italics - only when the project had a named client
+        if (project.client) {
+            doc.setFont('helvetica', 'italic');
+            doc.setFontSize(9);
+            doc.text(`Client: ${project.client}`, margin, yPos);
+            yPos += 5;
+        }
+
+        // Description. Prefer a purpose-written resume summary; never truncate
+        // mid-sentence - if there is no summary, fall back to whole sentences only.
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
-        const shortDesc = project.description.split('.').slice(0, 2).join('.') + '.';
-        const finalDesc = shortDesc.length > 200 ? shortDesc.substring(0, 200) + '...' : shortDesc;
-        const descLines = doc.splitTextToSize(`• ${finalDesc}`, maxWidth - 5);
-        descLines.forEach(line => {
+        let finalDesc = project.resumeSummary;
+        if (!finalDesc) {
+            const sentences = project.description.match(/[^.!?]+[.!?]+/g) || [project.description];
+            finalDesc = '';
+            for (const sentence of sentences) {
+                if ((finalDesc + sentence).trim().length > 320) break;
+                finalDesc += sentence;
+            }
+            finalDesc = (finalDesc || sentences[0] || '').trim();
+        }
+        const descLines = doc.splitTextToSize(finalDesc, maxWidth - 8);
+        descLines.forEach((line, i) => {
             checkPageOverflow(7);
-            doc.text(line, margin + 3, yPos);
+            if (i === 0) {
+                doc.text('\u2022', margin + 3, yPos);
+            }
+            doc.text(line, margin + 8, yPos);
             yPos += 5.5;
         });
         yPos += 2;
