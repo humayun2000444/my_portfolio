@@ -63,10 +63,19 @@ function downloadResumePDF() {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
 
-    // Extract key points from bio (first 2-3 sentences)
-    const bioSentences = personalInfo.bio.split('.').slice(0, 3).join('.') + '.';
-    const shortBio = bioSentences.length > 300 ? bioSentences.substring(0, 300) + '...' : bioSentences;
-    const bioLines = doc.splitTextToSize(shortBio, maxWidth);
+    // Prefer a purpose-written resume summary. Never cut mid-word: if we fall
+    // back to the site bio, take whole sentences only.
+    let summary = personalInfo.resumeSummary;
+    if (!summary) {
+        const sentences = personalInfo.bio.match(/[^.!?]+[.!?]+/g) || [personalInfo.bio];
+        summary = '';
+        for (const sentence of sentences) {
+            if ((summary + sentence).trim().length > 560) break;
+            summary += sentence;
+        }
+        summary = (summary || sentences[0] || '').trim();
+    }
+    const bioLines = doc.splitTextToSize(summary, maxWidth);
     doc.text(bioLines, margin, yPos);
     yPos += bioLines.length * 5.5 + 2;
 
@@ -77,12 +86,13 @@ function downloadResumePDF() {
     yPos += 5;
 
     doc.setFont('helvetica', 'normal');
-    const highlights = [
-        '• VoIP & Real-time Communication (FreeSWITCH, WebRTC, Janus, Socket.IO, Verto)',
-        '• Full-stack Development (React.js, Spring Boot, Node.js)',
-        '• Telecommunication Systems (Softswitch, PBX, Call Centers)',
-        '• AI/ML Integration (YOLOv8, MediaPipe, Real-time Detection)'
-    ];
+    const highlights = (personalInfo.keyStrengths && personalInfo.keyStrengths.length
+        ? personalInfo.keyStrengths
+        : [
+            'VoIP & Real-time Communication (FreeSWITCH, WebRTC, Janus)',
+            'Full-stack Development (React.js, Spring Boot, Node.js)',
+            'Telecommunication Systems (Softswitch, PBX, Call Centers)'
+        ]).map(h => `\u2022 ${h}`);
 
     highlights.forEach(highlight => {
         checkPageOverflow(6);

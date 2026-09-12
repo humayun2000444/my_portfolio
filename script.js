@@ -9,6 +9,14 @@ let portfolioData = {
         address: "House no 530, Road no 12, Adabor, Dhaka 1207",
         company: "Telcobright Limited",
         bio: "I'm a VoIP and telecom engineer with 3+ years building and debugging the systems that carry real phone calls. At Telcobright I work on carrier-grade softswitch software: FreeSWITCH with ESL control planes in Java and Spring Boot, WebRTC calling through Janus and SIP.js, SIP trunking, and TURN over TLS for networks that block VoIP media. I diagnose faults from SIP traces and packet captures rather than guesswork - one-way audio, dropped calls, registration failures. Alongside the telecom work I build the full stack around it in ReactJS, Node.js and MySQL/PostgreSQL, and deploy with Docker, Nginx and GitHub Actions. ICPC participant, and happiest in R&D - prototyping fast and turning ideas into working systems.",
+        resumeSummary: "VoIP and telecom engineer with 3+ years building and debugging the systems that carry real phone calls. At Telcobright I build carrier-grade platforms for licensed operators: a FreeSWITCH softswitch with a Java and Spring Boot control plane carrying 5,000+ concurrent calls, and a multi-tenant hosted PBX on FusionPBX serving BTCL and Cosmopolitan Communications Limited. I diagnose production faults from SIP traces and packet captures rather than guesswork, and build the full stack around the telephony layer in React, Spring Boot and PostgreSQL.",
+        keyStrengths: [
+            "VoIP & telephony: FreeSWITCH, FusionPBX, Asterisk, SIP, RTP, SIP trunking",
+            "Carrier platforms: softswitch, hosted PBX, least-cost routing, billing, CDR, SBC, SIGTRAN",
+            "WebRTC: Janus, SIP.js, coturn TURN over TLS, browser and mobile softphones",
+            "Full-stack: Java, Spring Boot, Node.js, React, TypeScript, PostgreSQL, MySQL",
+            "Production debugging: SIP traces, packet captures, NAT and firewall faults"
+        ],
         profileImage: "assets/profile.jpg",
         linkedinUrl: "https://www.linkedin.com/in/humayun-ahmed775",
         githubUrl: "https://github.com/humayun2000444"
