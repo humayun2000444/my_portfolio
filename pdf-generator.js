@@ -111,14 +111,21 @@ function downloadResumePDF() {
             doc.text(`${exp.startDate} - ${exp.isCurrentRole ? 'Present' : exp.endDate} | ${exp.location}`, margin, yPos);
             yPos += 5;
 
-            // Description with bullet points
+            // Description as real bullets: split on newlines, one bullet per point,
+            // with a hanging indent so wrapped lines do not each get their own bullet.
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
-            const descLines = doc.splitTextToSize(exp.description, maxWidth - 5);
-            descLines.forEach(line => {
-                checkPageOverflow(8);
-                doc.text(`• ${line}`, margin + 3, yPos);
-                yPos += lineHeight;
+            const bullets = String(exp.description).split('\n').map(b => b.trim()).filter(Boolean);
+            bullets.forEach(bullet => {
+                const lines = doc.splitTextToSize(bullet, maxWidth - 8);
+                lines.forEach((line, i) => {
+                    checkPageOverflow(8);
+                    if (i === 0) {
+                        doc.text('\u2022', margin + 3, yPos);
+                    }
+                    doc.text(line, margin + 8, yPos);
+                    yPos += lineHeight;
+                });
             });
             yPos += 3;
         });

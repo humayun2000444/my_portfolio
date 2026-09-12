@@ -448,7 +448,7 @@ let portfolioData = {
             startDate: "Jul 2023",
             endDate: null,
             isCurrentRole: true,
-            description: "Working on VoIP solutions, WebRTC applications, FreeSWITCH softswitch systems, and enterprise software development. Technologies: Java, FreeSWITCH, WebRTC, Spring Boot, PostgreSQL, MySQL."
+            description: "Build and operate carrier-grade telephony platforms for licensed operators.\nSoftswitch on FreeSWITCH with a Java and Spring Boot ESL control plane carrying 5,000+ concurrent calls: least-cost routing, real-time prepaid and postpaid billing, CDR pipeline, SIP trunk management with health-checked failover, and a WebRTC gateway for browser calling.\nMulti-tenant hosted PBX on FusionPBX serving two telecom operators (BTCL and CCL) - extensions, IVR, call queues, ring groups, conference rooms, live call monitoring, browser softphone, CDR reporting and billing with invoice generation.\nWebRTC calling for browser and mobile clients using Janus and SIP.js, with coturn TURN over TLS on 443 so calls complete on networks that block VoIP media.\nDiagnose production faults from SIP traces and packet captures rather than guesswork - one-way audio, dropped calls, registration failures and NAT/firewall issues.\nDelivered corporate training as trainer: SIGTRAN over secure IPSec networks with SMSC, VHLR, VMSC and bulk SMS platform operations (10 days), and SBC hardware with the digital service platform for BTCL (5 days).\nStack: FreeSWITCH, FusionPBX, SIP, RTP, WebRTC, Janus, Java, Spring Boot, PostgreSQL, MySQL, Redis, Docker, Nginx, Linux."
         },
         {
             id: "2",
@@ -458,7 +458,7 @@ let portfolioData = {
             startDate: "Oct 2024",
             endDate: "Jan 2025",
             isCurrentRole: false,
-            description: "Developed engineering solutions and worked on Janus WebRTC Gateway integration for real-time communication systems. Technologies: Engineering, Janus, WebRTC."
+            description: "Remote contract engagement alongside the Telcobright role.\nBuilt real-time communication features on the Janus WebRTC Gateway: signalling, peer connection handling and media routing for browser-based audio and video.\nStack: Janus, WebRTC, JavaScript, Java."
         },
         {
             id: "3",
@@ -468,7 +468,7 @@ let portfolioData = {
             startDate: "Feb 2021",
             endDate: "Jul 2023",
             isCurrentRole: false,
-            description: "Specialized in web design and front-end development using HTML, CSS, JavaScript, ReactJS, and responsive design principles. Part-time role focusing on creating user-friendly web interfaces."
+            description: "Part-time front-end role held while completing the BSc.\nBuilt and maintained responsive client websites and interfaces in HTML, CSS, JavaScript and ReactJS.\nStack: HTML5, CSS3, JavaScript, ReactJS, Bootstrap, WordPress."
         }
     ],
     education: [
