@@ -75,7 +75,97 @@ let portfolioData = {
                     { title: "Answering the phone without an agent, or a language", description: "A free keyword tier runs before any model, the dialogue asks which language to use and remembers it, and anything unrecognised returns 'not handled' so the router hands it to a person - the failure mode is a human being rather than silence." },
                     { title: "A middle tier that could not reach its own switch", description: "Provisioning went through a service that on one operator had never reached the switch. Read the switch first and found every fallback-written route carried a correct bridge string, so the concern recorded in the code was not borne out by the data; then swapped the order and reported both failure reasons instead of one." }
                 ],
-                impact: "36 screens, 9 industries and 5 companies running on one deployment; 456 commits in 7 weeks as lead engineer."
+                impact: [
+                    { metric: "36", label: "Screens Shipped" },
+                    { metric: "9", label: "Industries From One Codebase" },
+                    { metric: "5", label: "Companies On One Deployment" },
+                    { metric: "456", label: "Commits In 7 Weeks" }
+                ]
+            }
+        },
+        {
+            id: "routesphere",
+            title: "RouteSphere - Carrier Call & SMS Routing Engine",
+            client: "Telcobright Limited (operator deployments)",
+            role: "Core contributor - call state machine, omnichannel messaging, config layer (305 of 1,175 commits)",
+            resumeSummary: "Multi-tenant call and SMS routing engine on Quarkus and Java 21, driving FreeSWITCH over ESL. Every call passes a database-driven pipeline: tenant and partner resolution by source IP, channel limits, digit-filter rewriting, MNP lookup across ~954K ported numbers, longest-prefix dialplan matching, rating and multi-level balance reservation. Owned the call state machine and the omnichannel SMS/IM path.",
+            description: "Carrier-grade routing and processing platform built with Quarkus on Java 21, sitting in front of FreeSWITCH over the Event Socket Layer. A parked channel is resolved to a tenant, then to a partner by source IP, checked against that partner's concurrent channel limit, rewritten by longest-match digit filter rules, corrected for number portability against ~954,000 ported numbers held in memory, matched to a dialplan by longest prefix, rated against the partner's rate plan, and finally reserved against balances at partner, parent and root level before the call is allowed to proceed. Around that core sit OmniQueue (a YAML-driven abstraction over Kafka), statewalk state machines, CDR, campaign and scheduling modules, and WebRTC via LiveKit and OpenVidu. My work concentrated on routesphere-core, the call state machine, the configuration layer and the omnichannel IM/SMS integration.",
+            technologies: ["Java 21", "Quarkus", "FreeSWITCH ESL", "Kafka", "MySQL", "State Machines", "SIP", "Maven", "Chronicle Queue", "LiveKit"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: true,
+            caseStudy: {
+                problem: "A carrier switch has to answer four questions in the few milliseconds before a call is bridged: who is sending it, are they allowed to, what does the number really mean after portability, and can they afford it. Hardcoding any of that means a code change and a redeploy every time an operator adds a partner, a prefix or a rate.",
+                solution: "Built the decision path as a database-driven pipeline with no hardcoded prefix logic, so routing, rewriting, rating and credit control are all table entries an operator can change while calls are flowing.",
+                features: [
+                    "Tenant resolved by IP or domain, then partner resolved by source IP within that tenant",
+                    "Concurrent channel limit enforced per partner before the call is admitted",
+                    "Digit filter rules with longest match independently for calling and called numbers: allow/deny, add prefix, cut-and-replace",
+                    "Mobile number portability lookup over ~954,000 entries loaded lazily into a concurrent map for O(1) correction of the operator routing code",
+                    "Longest-prefix dialplan matching with no default fallback, so an unmatched call is dropped rather than misrouted",
+                    "Rate lookup per partner and rate plan, then multi-level balance reservation across partner, parent and root",
+                    "OmniQueue: Kafka producer behaviour, retries and HA configured per tenant in YAML instead of Java",
+                    "Call state machine handling park, answer, transfer, max-duration and teardown"
+                ],
+                challenges: [
+                    { title: "A cut that ended half a call", description: "A max-duration cut tore down one leg and left the other live, so the switch believed the call was over while the customer was still talking and still being charged. Fixed the state machine so the duration guard terminates the session rather than a single channel." },
+                    { title: "One number, many shapes", description: "The same subscriber arrives as 01789..., +8801789... and 8801789... depending on the channel. Normalised every inbound form to 880XXXXXXXXXX at the gateway boundary, so downstream routing, dedupe and customer matching all compare like with like." },
+                    { title: "Replies leaving by the wrong door", description: "In multi-tenant messaging an agent's reply could leave through another company's SMS gateway, exposing the wrong sender ID. Bound the outbound route to the agent's own company gateway at send time rather than to a global default." },
+                    { title: "Configuration read once, at boot", description: "Channel settings were cached at startup, so an operator changing a gateway had to wait for a restart. Made the channel layer re-read settings on change, which removed a class of overnight maintenance windows." }
+                ],
+                impact: [
+                    { metric: "954K", label: "Ported Numbers In Memory" },
+                    { metric: "305", label: "My Commits Of 1,175" },
+                    { metric: "3", label: "Balance Levels Reserved" },
+                    { metric: "0", label: "Hardcoded Prefixes" }
+                ],
+                architecture: "Quarkus services on Java 21 with FreeSWITCH as the media and signalling plane over ESL. MySQL holds tenants, partners, digit filter plans, dialplans, rate plans and balances; the MNP table is lazily loaded into a ConcurrentHashMap. Kafka carries events behind OmniQueue, a YAML-configured abstraction layer. State machines model the call lifecycle; CDR, campaign and scheduler modules consume the same core domain.",
+                duration: "Ongoing since 2025",
+                role: "Core contributor (305 of 1,175 commits)",
+                learnings: "How much of a carrier platform is really data modelling rather than code, why fail-closed routing beats a default route, and how to keep multi-tenant boundaries intact all the way out to the last gateway hop."
+            }
+        },
+        {
+            id: "softswitch-dashboard",
+            title: "Softswitch Operations Dashboard",
+            client: "BTCL, Cosmopolitan Communications Limited, LINK3",
+            role: "Second-largest contributor - 448 of 1,738 commits",
+            resumeSummary: "React operations console for a multi-tenant softswitch, deployed under seven client profiles across BTCL, CCL and LINK3. Covers PBX management, live call monitoring, CDR reporting, SMS campaigns and routing, voice broadcast, multi-level partner hierarchy, rate plans, DID pools and Kafka cluster health, with per-client theming from a single codebase.",
+            description: "The operations console that telecom staff actually use to run the softswitch day to day. One React codebase serves seven deployment profiles (BTCL PBX, BTCL HCC, BTCL SMS, BTCL Voice Broadcast, CCL, LINK3 and local development), each with its own API endpoints, branding and enabled service set, so a client is a configuration profile rather than a fork. Voice side: PBX and extension management, call routing, active call monitoring, CDR reports. SMS side: campaign management, bulk SMS, routing, sender ID management and developer API documentation. Plus voice broadcast campaigns, live call statistics, system and Kafka cluster health, and a multi-level partner hierarchy with rate plans and DID pool allocation.",
+            technologies: ["React", "Material UI", "Ant Design", "REST APIs", "Kafka", "Recharts", "Multi-tenancy", "JWT Auth"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: true,
+            caseStudy: {
+                problem: "Every operator wanted the same softswitch with a different face: different colours, different API hosts, and a different subset of services. Cloning the front end per client had already started, and each clone drifted further from the others with every bug fix applied in only one place.",
+                solution: "Collapsed the clones into one codebase with a profile system. A profile carries the API base, theme colour, brand and the services that are switched on, so adding a client is a configuration entry and a fix lands everywhere at once.",
+                features: [
+                    "Seven deployment profiles across three operators from a single build",
+                    "Voice: PBX and extension management, call routing, active call monitoring with live statistics",
+                    "SMS: campaigns, bulk send, routing rules, sender ID management and API documentation for integrators",
+                    "Voice broadcast campaign creation and monitoring",
+                    "Multi-level partner hierarchy with rate plans and DID pool management",
+                    "CDR reporting with filtering and export",
+                    "System health including Kafka cluster status",
+                    "Per-profile theming and branding applied at runtime"
+                ],
+                challenges: [
+                    { title: "One console, three operators, no forks", description: "Client-specific behaviour was spreading through the codebase as conditionals. Moved it into profile configuration so components read capability flags instead of asking which client they are running for." },
+                    { title: "Screens that must not lie", description: "An operations console showing stale call state is worse than no console: staff act on it. Live views poll and reconcile against the switch rather than trusting the last render." },
+                    { title: "Voice and SMS in one product", description: "The two service families have different entities, reports and permissions. Kept them as separate feature modules behind a shared shell so an SMS-only client never loads voice screens at all." }
+                ],
+                impact: [
+                    { metric: "7", label: "Client Profiles" },
+                    { metric: "3", label: "Operators In Production" },
+                    { metric: "448", label: "My Commits Of 1,738" },
+                    { metric: "2", label: "Service Families (Voice + SMS)" }
+                ],
+                architecture: "React single-page application with Material UI and Ant Design components, talking to softswitch REST APIs. A profile layer resolves API base URLs, theme tokens and feature flags at runtime; feature modules for voice, SMS and broadcast load behind a shared application shell. Charts via Recharts; Kafka and system health surfaced through dedicated status endpoints.",
+                duration: "Ongoing since 2024",
+                role: "Second-largest contributor (448 of 1,738 commits)",
+                learnings: "Configuration-driven multi-tenancy at the UI layer, and how operations tools are judged on whether the numbers on screen match the switch, not on how they look."
             }
         },
         {
@@ -164,6 +254,49 @@ let portfolioData = {
             }
         },
         {
+            id: "allinone-school",
+            title: "All-in-One School - Multi-School SaaS",
+            client: "Independent product",
+            role: "Sole developer - 68 of 68 commits",
+            resumeSummary: "Multi-school management platform for Bangladeshi schools, built and shipped alone: per-school public website with bilingual result search, four role tiers, a grading engine ported 1:1 from the offline app and verified by dual computation, plus per-school module grants for attendance and fees. Next.js 15, React 19, Prisma and MySQL.",
+            description: "A hosted platform that lets many schools run on one deployment, grown out of an earlier offline single-file app that is still maintained on another branch. Guardians and students need no login: each school gets a public website with home, teachers, gallery, notices and contact, plus result search where a student ID returns a marksheet with GPA, grade, class position and subject-wise marks, in English or Bangla on any page. Behind the login sit four roles: super admin creating schools and granting modules, school admin running classes, students, teachers, exams, fees, attendance and the website, teachers restricted to their own assigned classes and subjects, and students seeing only their own results, attendance, fees and notes. Schools start with result management and can request attendance and fees as module grants, which the super admin approves from a dashboard.",
+            technologies: ["Next.js 15", "React 19", "TypeScript", "Prisma", "MySQL", "Zod", "JOSE / JWT", "bcrypt", "SheetJS"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: true,
+            caseStudy: {
+                problem: "Bangladeshi schools were running results from an offline single-file app: reliable, but one file per school, no public site for guardians, and no way to share fixes. Moving them online risked the one thing they trusted, that the grades come out exactly as they did before.",
+                solution: "Built a hosted multi-school platform where the grading engine is a 1:1 port of the offline rules, and proved the port rather than claiming it: the backup importer recomputes every imported result both ways and compares, so a school can migrate only once the numbers match.",
+                features: [
+                    "One deployment serving many schools, each with its own public website and data",
+                    "Public result search by exam and student ID: GPA, grade, class position and subject-wise marks, no login",
+                    "Bilingual English and Bangla across every page, switchable anywhere",
+                    "Four roles with strictly scoped access: super admin, school admin, teacher, student and guardian",
+                    "Teachers limited to their assigned classes and subjects for marks and attendance",
+                    "Module grants: schools begin with results and request attendance or fees, approved by the super admin",
+                    "Offline backup importer with dual recomputation to prove grading parity before migration",
+                    "Fees with receipts, attendance, class notes and printed certificates"
+                ],
+                challenges: [
+                    { title: "Migrating trust, not just data", description: "Schools would not accept a new grading engine on assurance alone. The importer runs both the ported and the original rules over the same backup and reports any difference, so parity is demonstrated per school rather than asserted once." },
+                    { title: "Roles that hold at the data layer", description: "A teacher must never see another section's marks, and a guardian must see only their own child. Scope is enforced where the queries are built, not by hiding buttons in the interface." },
+                    { title: "Selling by module without breaking the product", description: "Attendance and fees are add-ons, but a locked module still has to look like part of the product. Ungranted modules render greyed with a padlock and a request action rather than disappearing, so the school knows what it can ask for." },
+                    { title: "Bilingual as a requirement, not a plugin", description: "Guardians read Bangla, administrators often work in English, and both appear in the same marksheet. Language is carried through the whole render path including printed output, rather than bolted on as a client-side toggle." }
+                ],
+                impact: [
+                    { metric: "68/68", label: "Commits (Sole Author)" },
+                    { metric: "4", label: "Role Tiers" },
+                    { metric: "2", label: "Languages Throughout" },
+                    { metric: "1:1", label: "Verified Grading Parity" }
+                ],
+                architecture: "Next.js 15 with React 19 and TypeScript, Prisma over MySQL, JWT sessions via JOSE with bcrypt password hashing, and Zod validation at the boundaries. Grading lives in a single shared module ported from the offline engine; the backup importer reads offline files with SheetJS and recomputes results through both paths for comparison.",
+                duration: "2026",
+                role: "Sole developer",
+                learnings: "That migration is a trust problem before it is a technical one, and that proving equivalence with the old system is worth more than any feature added on top of it."
+            }
+        },
+        {
             id: "3",
             title: "ExamGuard - AI Exam Proctoring SaaS",
             resumeSummary: "Multi-tenant SaaS proctoring platform with AI cheating detection using YOLOv8, InsightFace and MediaPipe at 30-50ms frame analysis, with composite risk scoring. LiveKit SFU video for 100+ participants and a six-provider LLM failover chain for question generation and automated grading.",
@@ -212,6 +345,89 @@ let portfolioData = {
                 duration: "6 months",
                 role: "Full Stack Developer & ML Engineer",
                 learnings: "End-to-end SaaS architecture design with multi-tenant data isolation, advanced computer vision pipeline optimization for real-time processing, building resilient LLM integrations with cascading failover, scaling WebRTC from P2P mesh to SFU architecture, and deploying production microservices with automated SSL, process management, and one-click deployment scripts."
+            }
+        },
+        {
+            id: "tour-wallet",
+            title: "Tour Wallet - Group Expense Tracker",
+            client: "Independent product",
+            role: "Co-developer - 36 of 74 commits",
+            resumeSummary: "React Native and Expo app with Firebase for group trip expenses: shared, partial, personal and IOU expense types, guest members without accounts, minimal-transfer settle-up, per-member PDF reports, push notifications, and offline WiFi Direct group voice calling built as a native Kotlin module.",
+            description: "A group expense tracker for trips, built with Expo, TypeScript and Firebase. One person holds the cash and the fund is tracked as members contribute. Expenses come in four kinds: shared across everyone, partial across selected members (with the rest notified but not charged), personal and private, or an IOU where one person paid for another until it is settled. Guests can be added without accounts or contact details and still take part in splits and balances, with the admin recording contributions on their behalf and generating a per-member PDF to print and hand over. Settle-up computes a minimal set of transfers to clear all balances. Beyond expenses, the app includes push notifications through Expo and FCM, invite codes, a private personal budget, and a WiFi Direct group voice call for tour members that works with no internet or router.",
+            technologies: ["React Native", "Expo", "TypeScript", "Firebase Auth", "Firestore", "Kotlin", "WiFi Direct", "Expo Push / FCM"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: true,
+            caseStudy: {
+                problem: "On a group trip one person ends up paying for everything, and the accounting happens afterwards from memory and screenshots. Existing splitters assume every participant has an account, an internet connection and the patience to reconcile at the end.",
+                solution: "Built the tracker around how trips actually run: one fund holder, members who may not have accounts, four kinds of expense including private ones, and a settle-up that proposes the fewest transfers rather than a balance table to interpret.",
+                features: [
+                    "Trips with an admin holding the fund; contributions tracked per member",
+                    "Guest members with no account, phone or email, included in splits and balances",
+                    "Four expense types: shared, partial with FYI notifications, personal and private, and IOU debt",
+                    "Settle up with a greedy minimal-transfer suggestion to clear all balances",
+                    "Per-member PDF reports for guests to be printed and handed over",
+                    "Push notifications via Expo and FCM that arrive with the app closed",
+                    "Invite codes to join a trip without searching for users",
+                    "Group voice call over WiFi Direct with no internet, using a native Kotlin module"
+                ],
+                challenges: [
+                    { title: "Members without accounts", description: "Requiring sign-up excludes exactly the people trips include: a driver, a relative, a friend who does not want another app. Guests exist as first-class members owned by the trip, with the admin acting on their behalf and a printed PDF as their record." },
+                    { title: "Voice calls where there is no network", description: "On hill and coastal routes there is no data. Group calling uses WiFi Direct with a native Kotlin module streaming 20ms PCM frames at 16kHz, with acoustic echo cancellation and noise suppression, keyed by the trip invite code so only members can join." },
+                    { title: "Telling people without charging them", description: "A partial expense concerns everyone socially but only some financially. Non-participants receive an informational notification rather than a charge, which kept the split honest without the group feeling excluded." }
+                ],
+                impact: [
+                    { metric: "4", label: "Expense Types" },
+                    { metric: "0", label: "Internet Needed For Group Call" },
+                    { metric: "36/74", label: "Commits (Co-developer)" },
+                    { metric: "16kHz", label: "Native Audio Streaming" }
+                ],
+                architecture: "Expo and React Native with TypeScript, Firebase Authentication and Firestore for data and sync, Expo Push over FCM for notifications, and a custom native Kotlin module for WiFi Direct discovery and real-time PCM audio using Android AudioRecord and AudioTrack with echo cancellation and noise suppression.",
+                duration: "2026",
+                role: "Co-developer (36 of 74 commits)",
+                learnings: "Designing for people who are not users of the app, and how much product value sits in the last mile: printed reports, offline calling and notifications that arrive when the app is closed."
+            }
+        },
+        {
+            id: "nms",
+            title: "NMS - VoIP Fleet Monitoring with HA",
+            client: "BTCL (Telcobright deployment)",
+            role: "Contributor - 27 of 101 commits",
+            resumeSummary: "Quarkus and React monitoring system that probes a fleet of FreeSWITCH boxes and Linux VMs from outside the cluster, chosen over deploying Grafana. Runs seven identical instances behind haproxy with automatic preempting failover, measured at zero failed requests when the active node is killed and recovery in about 1 to 6 seconds.",
+            description: "A deliberately small network monitoring system for the VoIP fleet: a Quarkus backend that probes FreeSWITCH servers and Linux VMs from outside the cluster, and a React and TypeScript dashboard embedded in the same deployment via Quinoa. It reports status, history and alerts over REST and server-sent events, with no Grafana, no Prometheus and no agent installed on the monitored hosts. High availability is provided by running seven identical copies behind haproxy, which routes to the highest-priority healthy instance and preempts back to the primary when it recovers. The only application change HA required was a whoami endpoint, which powers a served-by badge in the UI.",
+            technologies: ["Quarkus", "Java", "React", "TypeScript", "Vite", "Quinoa", "haproxy", "Server-Sent Events", "FreeSWITCH"],
+            githubUrl: "",
+            liveUrl: "",
+            image: "",
+            featured: false,
+            caseStudy: {
+                problem: "The VoIP fleet needed monitoring, and the default answer was Grafana plus Prometheus plus exporters on every host. That meant agents on production switches, a metrics store to run, and a stack larger than the thing it was watching, to answer one question: is this box up and are its calls flowing.",
+                solution: "Built a purpose-sized monitor that probes the fleet from outside rather than instrumenting from inside, then made the monitor itself highly available so the thing watching for outages does not become one.",
+                features: [
+                    "External probing of FreeSWITCH boxes and Linux VMs, with no agent installed on targets",
+                    "Status engine with history and threshold-based alerting",
+                    "React and TypeScript dashboard served by the same Quarkus process via Quinoa",
+                    "Live updates over server-sent events rather than polling",
+                    "Seven identical instances behind haproxy with priority-ordered health routing",
+                    "Automatic failover with preemption back to the primary on recovery",
+                    "Served-by badge in the UI, backed by a whoami endpoint, so operators can see which node answered"
+                ],
+                challenges: [
+                    { title: "Monitoring that must not need monitoring", description: "A single-instance monitor is a single point of failure at exactly the wrong moment. HA was solved in infrastructure, haproxy in front of seven identical processes, rather than by writing clustering code into the application." },
+                    { title: "Proving failover instead of assuming it", description: "The active node was killed under load and the result measured: zero failed requests, recovery within roughly one to six seconds, and automatic preemption when the primary came back." },
+                    { title: "Choosing not to build", description: "The alternative keepalived and virtual IP design was written up and rejected in favour of haproxy, and the decision recorded in the repository so the next engineer inherits the reasoning rather than the argument." }
+                ],
+                impact: [
+                    { metric: "0", label: "Failed Requests On Failover" },
+                    { metric: "1-6s", label: "Recovery Time" },
+                    { metric: "7", label: "Redundant Instances" },
+                    { metric: "0", label: "Agents On Monitored Hosts" }
+                ],
+                architecture: "Quarkus backend running the probe scheduler, status engine, storage and a REST plus SSE API, with a React and TypeScript frontend built by Vite and embedded through Quinoa. Seven instances run on port 8090 across the fleet; haproxy fronts them on a single stable URL and routes by health and priority.",
+                duration: "2026",
+                role: "Contributor (27 of 101 commits)",
+                learnings: "That high availability is often an infrastructure decision rather than an application one, and that a monitoring tool sized to the question beats a platform sized to the category."
             }
         },
         {
@@ -997,6 +1213,7 @@ const ${project.title.replace(/[^a-zA-Z]/g, '').substring(0, 10)} = {
 
                     <div id="desc-${project.id}" class="hidden mb-4">
                         ${project.client ? `<p class="text-xs text-gray-500 mb-2"><span class="text-gray-400 font-semibold">Client:</span> ${project.client}</p>` : ''}
+                        ${project.role ? `<p class="text-xs text-gray-500 mb-2"><span class="text-gray-400 font-semibold">My role:</span> ${project.role}</p>` : ''}
                         <p class="text-gray-400 text-sm leading-relaxed">${project.description}</p>
                     </div>
 
@@ -1868,6 +2085,7 @@ function openCaseStudyModal(projectId) {
     document.getElementById('cs-meta').innerHTML = `
         <span><i class="fas fa-user mr-1"></i>${cs.role}</span>
         <span><i class="fas fa-clock mr-1"></i>${cs.duration}</span>
+        ${project.client ? `<span><i class="fas fa-building mr-1"></i>${project.client}</span>` : ''}
     `;
 
     // Problem & Solution
